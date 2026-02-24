@@ -1,0 +1,37 @@
+@model TraineeScreeningTool.Models.Candidate
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h4>Assessment Entry: @Model.Name</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Enter the scores from Criteria Corp to generate a pathway recommendation.</p>
+            
+            <form asp-action="SubmitAssessment" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label font-weight-bold">IT Aptitude Score</label>
+                        <input type="number" name="it" class="form-control" step="0.1" min="0" max="100" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label font-weight-bold">Carpentry Manual Dex</label>
+                        <input type="number" name="carp" class="form-control" step="0.1" min="0" max="100" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label font-weight-bold">Bookkeeping / Math</label>
+                        <input type="number" name="book" class="form-control" step="0.1" min="0" max="100" required>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <a href="/" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    <button type="submit" class="btn btn-success">Generate Recommendation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
