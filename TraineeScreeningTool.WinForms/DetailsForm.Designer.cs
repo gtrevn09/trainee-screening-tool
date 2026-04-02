@@ -32,8 +32,8 @@ partial class DetailsForm
         lblExplanation = new Label();
 
         int labelX = 12;   // X position for header labels
-        int valueX = 200;  // X position for value labels
-        int rowH = 30;     // Height between rows
+        int valueX = 220;  // X position for value labels
+        int rowH = 35;     // Height between rows - increased to prevent clipping
         int startY = 15;   // Starting Y position
 
         // Add all rows
@@ -52,8 +52,11 @@ partial class DetailsForm
         AddRow("Explanation:", lblExplanation, labelX, valueX, startY + rowH * 12);
 
         // Set form size
-        ClientSize = new Size(500, startY + rowH * 13 + 20);
+        ClientSize = new Size(620, startY + rowH * 13 + 20);
         Text = "Candidate Details";
+        StartPosition = FormStartPosition.CenterScreen;
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
     }
 
     // Helper method to add a header label and value label row
@@ -62,11 +65,12 @@ partial class DetailsForm
         var header = new Label();
         header.Text = headerText;
         header.Location = new Point(hx, y);
-        header.Size = new Size(180, 20);
+        header.Size = new Size(200, 25); 
+        header.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         Controls.Add(header);
 
         valueLbl.Location = new Point(vx, y);
-        valueLbl.Size = new Size(280, 20);
+        valueLbl.Size = new Size(380, 25); 
         Controls.Add(valueLbl);
     }
 

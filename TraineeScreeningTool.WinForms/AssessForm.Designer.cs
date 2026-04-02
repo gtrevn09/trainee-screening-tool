@@ -32,10 +32,10 @@ partial class AssessForm
         int labelX = 12;    // X position for labels
         int inputX = 180;   // X position for text boxes
         int inputW = 100;   // Width of text boxes
-        int rowH = 35;      // Height between each row
+        int rowH = 40;      // Height between each row - increased to prevent clipping
         int startY = 15;    // Starting Y position
 
-        // Helper labels and text boxes for each score
+        // Add each score row
         AddRow("CCAT Raw Score:", txtCCATRaw, labelX, inputX, inputW, startY);
         AddRow("CCAT Math %:", txtCCATMath, labelX, inputX, inputW, startY + rowH);
         AddRow("CCAT Verbal %:", txtCCATVerbal, labelX, inputX, inputW, startY + rowH * 2);
@@ -49,14 +49,17 @@ partial class AssessForm
 
         // Submit button
         btnSubmit.Location = new Point(inputX, startY + rowH * 10);
-        btnSubmit.Size = new Size(100, 30);
+        btnSubmit.Size = new Size(100, 35);
         btnSubmit.Text = "Submit";
         btnSubmit.Click += btnSubmit_Click;
         Controls.Add(btnSubmit);
 
         // Set form size
-        ClientSize = new Size(320, startY + rowH * 11);
+        ClientSize = new Size(320, startY + rowH * 10 + 60);
         Text = "Enter Assessment Scores";
+        StartPosition = FormStartPosition.CenterScreen;
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
     }
 
     // Helper method to add a label and text box row
@@ -65,11 +68,11 @@ partial class AssessForm
         var lbl = new Label();
         lbl.Text = labelText;
         lbl.Location = new Point(lx, y + 3);
-        lbl.Size = new Size(160, 20);
+        lbl.Size = new Size(160, 25); 
         Controls.Add(lbl);
 
         txt.Location = new Point(tx, y);
-        txt.Size = new Size(tw, 23);
+        txt.Size = new Size(tw, 25);
         Controls.Add(txt);
     }
 

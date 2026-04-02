@@ -9,20 +9,44 @@ public partial class MainForm : Form
     // Stores the logged in username so we can pass it to other forms
     private readonly string _username;
 
+    // Tracks whether the mouse is being held down for drag selection
+    private bool _isDragging = false;
+
+    // Tracks the check state to apply during drag (true = check, false = uncheck)
+    private bool _dragCheckValue = true;
+
     // Constructor - accepts the logged in username from Program.cs
     public MainForm(string username)
     {
         InitializeComponent();
         _username = username;
         LoadCandidates();
+
+        // Wire up mouse events for drag-to-select
+        dataGridView1.MouseDown += dataGridView1_MouseDown;
+        dataGridView1.MouseMove += dataGridView1_MouseMove;
+        dataGridView1.MouseUp += dataGridView1_MouseUp;
     }
 
     // Fetches all candidates from the database and displays them in the grid
     private void LoadCandidates()
     {
         using var context = new ApplicationDbContext();
-        dataGridView1.DataSource = context.Candidates.ToList();
+        var candidates = context.Candidates.ToList();
+
+        dataGridView1.DataSource = candidates;
         dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+        // Add checkbox column if it doesn't already exist
+        if (!dataGridView1.Columns.Contains("Select"))
+        {
+            var checkboxCol = new DataGridViewCheckBoxColumn();
+            checkboxCol.Name = "Select";
+            checkboxCol.HeaderText = "Select";
+            checkboxCol.Width = 50;
+            checkboxCol.DisplayIndex = 0;
+            dataGridView1.Columns.Insert(0, checkboxCol);
+        }
     }
 
     // Filters candidates as the user types in the search box
@@ -41,6 +65,53 @@ public partial class MainForm : Form
 
         dataGridView1.DataSource = results;
         dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+        // Re-add checkbox column after filtering
+        if (!dataGridView1.Columns.Contains("Select"))
+        {
+            var checkboxCol = new DataGridViewCheckBoxColumn();
+            checkboxCol.Name = "Select";
+            checkboxCol.HeaderText = "Select";
+            checkboxCol.Width = 50;
+            checkboxCol.DisplayIndex = 0;
+            dataGridView1.Columns.Insert(0, checkboxCol);
+        }
+    }
+
+    // Starts drag selection when mouse is held down on a checkbox cell
+    private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+    {
+        // Only activate drag when Shift is held
+        if ((ModifierKeys & Keys.Shift) == 0) return;
+
+        var hitInfo = dataGridView1.HitTest(e.X, e.Y);
+        if (hitInfo.RowIndex < 0) return;
+
+        var row = dataGridView1.Rows[hitInfo.RowIndex];
+        var currentValue = row.Cells["Select"].Value as bool? ?? false;
+
+        // Start dragging and toggle the opposite of current value
+        _isDragging = true;
+        _dragCheckValue = !currentValue;
+        row.Cells["Select"].Value = _dragCheckValue;
+    }
+
+    // Applies check state to each row the mouse moves over while dragging
+    private void dataGridView1_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (!_isDragging) return;
+
+        var hitInfo = dataGridView1.HitTest(e.X, e.Y);
+        if (hitInfo.RowIndex < 0) return;
+
+        // Apply the drag check value to the row being hovered over
+        dataGridView1.Rows[hitInfo.RowIndex].Cells["Select"].Value = _dragCheckValue;
+    }
+
+    // Stops drag selection when mouse is released
+    private void dataGridView1_MouseUp(object sender, MouseEventArgs e)
+    {
+        _isDragging = false; // Stop dragging
     }
 
     // Resizes controls when the form is resized or maximized
@@ -74,12 +145,12 @@ public partial class MainForm : Form
     // Opens the Add Candidate form
     private void btnAddCandidate_Click(object sender, EventArgs e)
     {
-        var form = new AddCandidateForm(_username); // Pass username for logging
+        var form = new AddCandidateForm(_username);
         form.ShowDialog();
         LoadCandidates();
     }
 
-    // Opens the Import CSV form - passes username for logging
+    // Opens the Import CSV form
     private void btnImport_Click(object sender, EventArgs e)
     {
         var form = new ImportForm(_username);
@@ -106,31 +177,55 @@ public partial class MainForm : Form
         form.ShowDialog();
     }
 
-    // Deletes the selected candidate and logs the action
+    // Deletes all checked candidates - works for single or multiple
     private void btnDelete_Click(object sender, EventArgs e)
     {
-        if (dataGridView1.SelectedRows.Count == 0) return;
-        int id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
+        // Collect IDs of all checked rows
+        var checkedIds = new List<int>();
 
+        foreach (DataGridViewRow row in dataGridView1.Rows)
+        {
+            var checkValue = row.Cells["Select"].Value;
+            if (checkValue != null && (bool)checkValue)
+            {
+                checkedIds.Add((int)row.Cells["Id"].Value);
+            }
+        }
+
+        // If nothing is checked fall back to the selected row
+        if (checkedIds.Count == 0)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please check or select a candidate to delete.",
+                    "No Selection");
+                return;
+            }
+            checkedIds.Add((int)dataGridView1.SelectedRows[0].Cells["Id"].Value);
+        }
+
+        // Confirm deletion
         var confirm = MessageBox.Show(
-            "Are you sure you want to delete this candidate?",
+            $"Are you sure you want to delete {checkedIds.Count} candidate(s)?",
             "Confirm Delete",
             MessageBoxButtons.YesNo);
 
         if (confirm != DialogResult.Yes) return;
 
         using var context = new ApplicationDbContext();
-        var candidate = context.Candidates.Find(id);
 
-        if (candidate != null)
+        foreach (var id in checkedIds)
         {
-            context.Log(_username, "Delete Candidate",
-                $"Deleted candidate: {candidate.FullName} ({candidate.Email})");
-
-            context.Candidates.Remove(candidate);
-            context.SaveChanges();
+            var candidate = context.Candidates.Find(id);
+            if (candidate != null)
+            {
+                context.Log(_username, "Delete Candidate",
+                    $"Deleted candidate: {candidate.FullName} ({candidate.Email})");
+                context.Candidates.Remove(candidate);
+            }
         }
 
+        context.SaveChanges();
         LoadCandidates();
     }
 
