@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jorda\\TraineeScreeningTool\\TraineeScreeningTool.csproj": {}
+    "C:\\Users\\gtrev\\OneDrive\\Desktop\\Workforce-Development-Trainee-Screening-Tool\\TraineeScreeningTool.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jorda\\TraineeScreeningTool\\TraineeScreeningTool.csproj": {
+    "C:\\Users\\gtrev\\OneDrive\\Desktop\\Workforce-Development-Trainee-Screening-Tool\\TraineeScreeningTool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jorda\\TraineeScreeningTool\\TraineeScreeningTool.csproj",
+        "projectUniqueName": "C:\\Users\\gtrev\\OneDrive\\Desktop\\Workforce-Development-Trainee-Screening-Tool\\TraineeScreeningTool.csproj",
         "projectName": "TraineeScreeningTool",
-        "projectPath": "C:\\Users\\jorda\\TraineeScreeningTool\\TraineeScreeningTool.csproj",
-        "packagesPath": "C:\\Users\\jorda\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jorda\\TraineeScreeningTool\\obj\\",
+        "projectPath": "C:\\Users\\gtrev\\OneDrive\\Desktop\\Workforce-Development-Trainee-Screening-Tool\\TraineeScreeningTool.csproj",
+        "packagesPath": "C:\\Users\\gtrev\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gtrev\\OneDrive\\Desktop\\Workforce-Development-Trainee-Screening-Tool\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jorda\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\gtrev\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -44,7 +40,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -70,6 +66,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.14, 9.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[9.0.14, 9.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.14, 9.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.14, 9.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -78,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

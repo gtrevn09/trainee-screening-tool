@@ -1,5 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+	<ItemGroup>
+		<Compile Remove="TraineeScreeningTool.WinForms\**" />
+		<None Remove="TraineeScreeningTool.WinForms\**" />
+		<Content Remove="TraineeScreeningTool.WinForms\**" />
+		<EmbeddedResource Remove="TraineeScreeningTool.WinForms\**" />
+	</ItemGroup>
+	
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
