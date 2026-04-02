@@ -8,21 +8,26 @@ public partial class LogViewerForm : Form
     public LogViewerForm()
     {
         InitializeComponent();
-        LoadLogs(); // Load all logs into the grid on open
+        LoadLogs();
     }
 
     // Fetches all logs from the database and displays them in the grid
     private void LoadLogs()
     {
-        using var context = new ApplicationDbContext(); // Open database connection
+        using var context = new ApplicationDbContext();
 
         // Get logs ordered by most recent first
         var logs = context.AppLogs
             .OrderByDescending(l => l.Timestamp)
             .ToList();
 
-        dataGridViewLogs.DataSource = logs; // Bind logs to grid
+        dataGridViewLogs.DataSource = logs;
+
+        // Auto size all columns to fit their content
         dataGridViewLogs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+        // Make the Details column stretch to fill remaining space
+        dataGridViewLogs.Columns["Details"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 
     // Clears all logs from the database
@@ -36,16 +41,16 @@ public partial class LogViewerForm : Form
         if (confirm != DialogResult.Yes) return;
 
         using var context = new ApplicationDbContext();
-        context.AppLogs.RemoveRange(context.AppLogs); // Remove all logs
+        context.AppLogs.RemoveRange(context.AppLogs);
         context.SaveChanges();
 
-        LoadLogs(); // Refresh the grid
+        LoadLogs();
         MessageBox.Show("Logs cleared successfully.", "Success");
     }
 
     // Refreshes the log grid
     private void btnRefresh_Click(object sender, EventArgs e)
     {
-        LoadLogs(); // Reload logs from database
+        LoadLogs();
     }
 }

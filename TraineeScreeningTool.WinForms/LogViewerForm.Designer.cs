@@ -21,16 +21,16 @@ partial class LogViewerForm
         btnClearLogs = new Button();
         Label lblTitle = new Label();
 
-        // Title label
+        // Title label - increased height to prevent clipping
         lblTitle.Text = "Activity Log";
         lblTitle.Location = new Point(12, 12);
-        lblTitle.Size = new Size(760, 25);
+        lblTitle.Size = new Size(760, 35);
         lblTitle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
         lblTitle.TextAlign = ContentAlignment.MiddleCenter;
 
-        // Logs grid
-        dataGridViewLogs.Location = new Point(12, 45);
-        dataGridViewLogs.Size = new Size(760, 450);
+        // Logs grid - moved down to give title room
+        dataGridViewLogs.Location = new Point(12, 55);
+        dataGridViewLogs.Size = new Size(760, 440);
         dataGridViewLogs.Name = "dataGridViewLogs";
         dataGridViewLogs.ReadOnly = true;
         dataGridViewLogs.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -42,7 +42,7 @@ partial class LogViewerForm
         btnRefresh.Text = "Refresh";
         btnRefresh.Click += btnRefresh_Click;
 
-        // Clear Logs button - red to indicate danger
+        // Clear Logs button
         btnClearLogs.Location = new Point(152, 510);
         btnClearLogs.Size = new Size(130, 35);
         btnClearLogs.Text = "Clear All Logs";

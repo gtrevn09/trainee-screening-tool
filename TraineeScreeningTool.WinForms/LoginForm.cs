@@ -70,4 +70,11 @@ public partial class LoginForm : Form
             btnLogin_Click(sender, e);
         }
     }
+
+    // Opens the Forgot Password form
+    private void btnForgotPassword_Click(object sender, EventArgs e)
+    {
+        var form = new ForgotPasswordForm();
+        form.ShowDialog();
+    }
 }

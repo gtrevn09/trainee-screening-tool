@@ -16,4 +16,16 @@ public class User
 
     // Whether this account is active or disabled
     public bool IsActive { get; set; } = true;
+
+    // Whether this is the user's first time logging in
+    public bool IsFirstLogin { get; set; } = true;
+
+    // The user's full name
+    public string FullName { get; set; } = string.Empty;
+
+    // The user's email address - used for password reset
+    public string Email { get; set; } = string.Empty;
+
+    // Tracks whether the user needs to change their password
+    public bool MustChangePassword { get; set; } = false;
 }

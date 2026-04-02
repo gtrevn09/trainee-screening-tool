@@ -22,7 +22,7 @@ partial class MainForm
         btnAssess = new Button();
         btnDetails = new Button();
         btnDelete = new Button();
-        btnChangePassword = new Button();
+        btnUserDetails = new Button();
         btnLogout = new Button();
         btnViewLogs = new Button();
 
@@ -37,7 +37,7 @@ partial class MainForm
         dataGridView1.Location = new Point(12, 47);
         dataGridView1.Size = new Size(760, 315);
         dataGridView1.Name = "dataGridView1";
-        dataGridView1.ReadOnly = false; // Allow checkbox interaction
+        dataGridView1.ReadOnly = false;
         dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         dataGridView1.MultiSelect = true;
 
@@ -68,19 +68,19 @@ partial class MainForm
         btnDelete.Click += btnDelete_Click;
 
         // Row 2 buttons
-        btnChangePassword.Location = new Point(12, 420);
-        btnChangePassword.Size = new Size(160, 35);
-        btnChangePassword.Text = "Change Password";
-        btnChangePassword.Click += btnChangePassword_Click;
+        btnUserDetails.Location = new Point(12, 420);
+        btnUserDetails.Size = new Size(130, 35);
+        btnUserDetails.Text = "User Details";
+        btnUserDetails.Click += btnUserDetails_Click;
 
-        btnLogout.Location = new Point(182, 420);
+        btnLogout.Location = new Point(152, 420);
         btnLogout.Size = new Size(130, 35);
         btnLogout.Text = "Logout";
         btnLogout.BackColor = Color.IndianRed;
         btnLogout.ForeColor = Color.White;
         btnLogout.Click += btnLogout_Click;
 
-        btnViewLogs.Location = new Point(322, 420);
+        btnViewLogs.Location = new Point(292, 420);
         btnViewLogs.Size = new Size(130, 35);
         btnViewLogs.Text = "View Logs";
         btnViewLogs.Click += btnViewLogs_Click;
@@ -94,7 +94,7 @@ partial class MainForm
         Controls.Add(btnAssess);
         Controls.Add(btnDetails);
         Controls.Add(btnDelete);
-        Controls.Add(btnChangePassword);
+        Controls.Add(btnUserDetails);
         Controls.Add(btnLogout);
         Controls.Add(btnViewLogs);
         Text = "LIFE Works Trainee Screening Tool";
@@ -108,7 +108,7 @@ partial class MainForm
     private Button btnAssess;
     private Button btnDetails;
     private Button btnDelete;
-    private Button btnChangePassword;
+    private Button btnUserDetails;
     private Button btnLogout;
     private Button btnViewLogs;
 }

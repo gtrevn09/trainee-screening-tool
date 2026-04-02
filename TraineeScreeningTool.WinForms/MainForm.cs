@@ -12,7 +12,7 @@ public partial class MainForm : Form
     // Tracks whether the mouse is being held down for drag selection
     private bool _isDragging = false;
 
-    // Tracks the check state to apply during drag (true = check, false = uncheck)
+    // Tracks the check state to apply during drag
     private bool _dragCheckValue = true;
 
     // Constructor - accepts the logged in username from Program.cs
@@ -78,10 +78,9 @@ public partial class MainForm : Form
         }
     }
 
-    // Starts drag selection when mouse is held down on a checkbox cell
+    // Starts drag selection when mouse is held down with Shift
     private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
     {
-        // Only activate drag when Shift is held
         if ((ModifierKeys & Keys.Shift) == 0) return;
 
         var hitInfo = dataGridView1.HitTest(e.X, e.Y);
@@ -90,7 +89,6 @@ public partial class MainForm : Form
         var row = dataGridView1.Rows[hitInfo.RowIndex];
         var currentValue = row.Cells["Select"].Value as bool? ?? false;
 
-        // Start dragging and toggle the opposite of current value
         _isDragging = true;
         _dragCheckValue = !currentValue;
         row.Cells["Select"].Value = _dragCheckValue;
@@ -104,14 +102,13 @@ public partial class MainForm : Form
         var hitInfo = dataGridView1.HitTest(e.X, e.Y);
         if (hitInfo.RowIndex < 0) return;
 
-        // Apply the drag check value to the row being hovered over
         dataGridView1.Rows[hitInfo.RowIndex].Cells["Select"].Value = _dragCheckValue;
     }
 
     // Stops drag selection when mouse is released
     private void dataGridView1_MouseUp(object sender, MouseEventArgs e)
     {
-        _isDragging = false; // Stop dragging
+        _isDragging = false;
     }
 
     // Resizes controls when the form is resized or maximized
@@ -137,9 +134,9 @@ public partial class MainForm : Form
         btnDetails.Location = new Point(margin + 420, btnRow1Y);
         btnDelete.Location = new Point(margin + 560, btnRow1Y);
 
-        btnChangePassword.Location = new Point(margin, btnRow2Y);
-        btnLogout.Location = new Point(margin + 170, btnRow2Y);
-        btnViewLogs.Location = new Point(margin + 310, btnRow2Y);
+        btnUserDetails.Location = new Point(margin, btnRow2Y);
+        btnLogout.Location = new Point(margin + 140, btnRow2Y);
+        btnViewLogs.Location = new Point(margin + 280, btnRow2Y);
     }
 
     // Opens the Add Candidate form
@@ -177,10 +174,9 @@ public partial class MainForm : Form
         form.ShowDialog();
     }
 
-    // Deletes all checked candidates - works for single or multiple
+    // Deletes all checked candidates
     private void btnDelete_Click(object sender, EventArgs e)
     {
-        // Collect IDs of all checked rows
         var checkedIds = new List<int>();
 
         foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -192,7 +188,6 @@ public partial class MainForm : Form
             }
         }
 
-        // If nothing is checked fall back to the selected row
         if (checkedIds.Count == 0)
         {
             if (dataGridView1.SelectedRows.Count == 0)
@@ -204,7 +199,6 @@ public partial class MainForm : Form
             checkedIds.Add((int)dataGridView1.SelectedRows[0].Cells["Id"].Value);
         }
 
-        // Confirm deletion
         var confirm = MessageBox.Show(
             $"Are you sure you want to delete {checkedIds.Count} candidate(s)?",
             "Confirm Delete",
@@ -229,10 +223,10 @@ public partial class MainForm : Form
         LoadCandidates();
     }
 
-    // Opens the Change Password form
-    private void btnChangePassword_Click(object sender, EventArgs e)
+    // Opens the User Details form
+    private void btnUserDetails_Click(object sender, EventArgs e)
     {
-        var form = new ChangePasswordForm(_username);
+        var form = new UserDetailsForm(_username);
         form.ShowDialog();
     }
 
