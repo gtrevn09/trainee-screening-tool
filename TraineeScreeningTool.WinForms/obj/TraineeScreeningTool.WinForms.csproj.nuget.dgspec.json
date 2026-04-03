@@ -55,6 +55,10 @@
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[10.0.5, )"
+            },
+            "itext7": {
+              "target": "Package",
+              "version": "[9.6.0, )"
             }
           },
           "imports": [

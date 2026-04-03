@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "5v1T4atyg0M=",
+  "dgSpecHash": "c6Q/HI5QUCk=",
   "success": true,
   "projectFilePath": "C:\\Users\\gtrev\\OneDrive\\Desktop\\Workforce-Development-Trainee-Screening-Tool\\TraineeScreeningTool.WinForms\\TraineeScreeningTool.WinForms.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gtrev\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\gtrev\\.nuget\\packages\\itext\\9.6.0\\itext.9.6.0.nupkg.sha512",
+    "C:\\Users\\gtrev\\.nuget\\packages\\itext.commons\\9.6.0\\itext.commons.9.6.0.nupkg.sha512",
+    "C:\\Users\\gtrev\\.nuget\\packages\\itext7\\9.6.0\\itext7.9.6.0.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.11.0\\microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.codeanalysis.common\\5.0.0\\microsoft.codeanalysis.common.5.0.0.nupkg.sha512",
@@ -13,6 +16,7 @@
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.codeanalysis.workspaces.common\\5.0.0\\microsoft.codeanalysis.workspaces.common.5.0.0.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.codeanalysis.workspaces.msbuild\\5.0.0\\microsoft.codeanalysis.workspaces.msbuild.5.0.0.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.data.sqlite.core\\10.0.5\\microsoft.data.sqlite.core.10.0.5.nupkg.sha512",
+    "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.dotnet.platformabstractions\\1.1.0\\microsoft.dotnet.platformabstractions.1.1.0.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.5\\microsoft.entityframeworkcore.10.0.5.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.5\\microsoft.entityframeworkcore.abstractions.10.0.5.nupkg.sha512",
     "C:\\Users\\gtrev\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.5\\microsoft.entityframeworkcore.analyzers.10.0.5.nupkg.sha512",

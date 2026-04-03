@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TraineeScreeningTool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+505d2d00fc6754c294057ee292a4f4a9dfebfe35")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ded7966ec761aef0aaac2677b406fea2b6003b97")]
 [assembly: System.Reflection.AssemblyProductAttribute("TraineeScreeningTool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TraineeScreeningTool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

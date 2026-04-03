@@ -62,4 +62,11 @@ public class Candidate
 
     // Helper property to display full name
     public string FullName => $"{FirstName} {LastName}";
+
+    // Test date from PDF
+    public string TestDate { get; set; } = string.Empty;
+
+    // CLIK scores
+    public string CLIKProficiency { get; set; } = string.Empty;
+    public int? CLIKRawScore { get; set; }
 }

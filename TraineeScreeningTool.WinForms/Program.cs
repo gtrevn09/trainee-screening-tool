@@ -11,7 +11,7 @@ static class Program
 
         // Set up database
         using var context = new ApplicationDbContext();
-       
+        
         context.Database.EnsureCreated();
 
         // Show login form first

@@ -26,15 +26,17 @@ public partial class MainForm : Form
         dataGridView1.MouseDown += dataGridView1_MouseDown;
         dataGridView1.MouseMove += dataGridView1_MouseMove;
         dataGridView1.MouseUp += dataGridView1_MouseUp;
+
+        // Wire up cell edit events to save changes to database
+        dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+        dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;
     }
 
     // Fetches all candidates from the database and displays them in the grid
     private void LoadCandidates()
     {
         using var context = new ApplicationDbContext();
-        var candidates = context.Candidates.ToList();
-
-        dataGridView1.DataSource = candidates;
+        dataGridView1.DataSource = context.Candidates.ToList();
         dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
         // Add checkbox column if it doesn't already exist
@@ -47,6 +49,109 @@ public partial class MainForm : Form
             checkboxCol.DisplayIndex = 0;
             dataGridView1.Columns.Insert(0, checkboxCol);
         }
+
+        // Rename columns to friendly display names
+        RenameColumns();
+    }
+
+    // Renames all columns to friendly display names
+    private void RenameColumns()
+    {
+        RenameColumn("FirstName", "First Name");
+        RenameColumn("LastName", "Last Name");
+        RenameColumn("Email", "Email");
+        RenameColumn("TestDate", "Test Date");
+        RenameColumn("TalentSignal", "Talent Signal");
+        RenameColumn("CCATRawScore", "CCAT Raw");
+        RenameColumn("CCATOverallPercentile", "CCAT %");
+        RenameColumn("CCATMathPercentile", "CCAT Math %");
+        RenameColumn("CCATVerbalPercentile", "CCAT Verbal %");
+        RenameColumn("CCATSpatialPercentile", "CCAT Spatial %");
+        RenameColumn("CMRAOverallPercentile", "CMRA %");
+        RenameColumn("CBSTRawScore", "CBST Raw");
+        RenameColumn("CBSTOverallPercentile", "CBST %");
+        RenameColumn("CBSTMathRaw", "CBST Math");
+        RenameColumn("CBSTVerbalRaw", "CBST Verbal");
+        RenameColumn("CLIKRawScore", "CLIK Raw");
+        RenameColumn("CLIKProficiency", "CLIK Proficiency");
+        RenameColumn("TypingWordsPerMinute", "Typing WPM");
+        RenameColumn("TypingErrors", "Typing Errors");
+        RenameColumn("TypingOverallPercentile", "Typing %");
+        RenameColumn("CASTOverallPercentile", "CAST %");
+        RenameColumn("CASTDividedAttention", "CAST Divided");
+        RenameColumn("CASTFiltering", "CAST Filtering");
+        RenameColumn("CASTReactionTime", "CAST Reaction");
+        RenameColumn("CASTVigilance", "CAST Vigilance");
+        RenameColumn("WordRawScore", "Word Raw");
+        RenameColumn("WordProficiency", "Word Proficiency");
+        RenameColumn("ExcelRawScore", "Excel Raw");
+        RenameColumn("ExcelProficiency", "Excel Proficiency");
+        RenameColumn("CSAPRecommendation", "CSAP Recommendation");
+        RenameColumn("CSAPAchievement", "CSAP Achievement");
+        RenameColumn("CSAPAssertiveness", "CSAP Assertiveness");
+        RenameColumn("CSAPCooperativeness", "CSAP Cooperativeness");
+        RenameColumn("CSAPGoalOrientation", "CSAP Goal");
+        RenameColumn("CSAPMotivation", "CSAP Motivation");
+        RenameColumn("CSAPTeamPlayer", "CSAP Team Player");
+        RenameColumn("Recommendation", "Pathway Recommendation");
+        RenameColumn("ReadinessRating", "Readiness");
+        RenameColumn("Explanation", "Explanation");
+        RenameColumn("FullName", "Full Name");
+    }
+
+    // Renames a grid column if it exists
+    private void RenameColumn(string fieldName, string displayName)
+    {
+        if (dataGridView1.Columns.Contains(fieldName))
+            dataGridView1.Columns[fieldName].HeaderText = displayName;
+    }
+
+    // Saves changes when a cell is edited directly in the grid
+    private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+    {
+        // Ignore header row and checkbox column
+        if (e.RowIndex < 0) return;
+        if (dataGridView1.Columns[e.ColumnIndex].Name == "Select") return;
+
+        try
+        {
+            // Get the ID of the edited row
+            var idCell = dataGridView1.Rows[e.RowIndex].Cells["Id"];
+            if (idCell.Value == null) return;
+            int id = (int)idCell.Value;
+
+            // Get the column field name and new value
+            var colName = dataGridView1.Columns[e.ColumnIndex].Name;
+            var newValue = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            using var context = new ApplicationDbContext();
+            var candidate = context.Candidates.Find(id);
+            if (candidate == null) return;
+
+            // Use reflection to update the correct property
+            var prop = typeof(Candidate).GetProperty(colName);
+            if (prop != null)
+            {
+                if (newValue == null || newValue is DBNull)
+                    prop.SetValue(candidate, null);
+                else if (prop.PropertyType == typeof(string))
+                    prop.SetValue(candidate, newValue.ToString());
+                else if (prop.PropertyType == typeof(int?))
+                    prop.SetValue(candidate, int.TryParse(newValue.ToString(), out int i) ? i : (int?)null);
+                else if (prop.PropertyType == typeof(int))
+                    prop.SetValue(candidate, int.TryParse(newValue.ToString(), out int i2) ? i2 : 0);
+
+                context.SaveChanges();
+            }
+        }
+        catch { } // Silently ignore conversion errors
+    }
+
+    // Required to trigger CellValueChanged immediately after editing
+    private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+    {
+        if (dataGridView1.IsCurrentCellDirty)
+            dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
     }
 
     // Filters candidates as the user types in the search box
@@ -76,6 +181,8 @@ public partial class MainForm : Form
             checkboxCol.DisplayIndex = 0;
             dataGridView1.Columns.Insert(0, checkboxCol);
         }
+
+        RenameColumns();
     }
 
     // Starts drag selection when mouse is held down with Shift
@@ -128,12 +235,15 @@ public partial class MainForm : Form
             ClientSize.Width - margin * 2,
             ClientSize.Height - 135);
 
+        // Row 1 buttons
         btnAddCandidate.Location = new Point(margin, btnRow1Y);
-        btnImport.Location = new Point(margin + 140, btnRow1Y);
-        btnAssess.Location = new Point(margin + 280, btnRow1Y);
-        btnDetails.Location = new Point(margin + 420, btnRow1Y);
-        btnDelete.Location = new Point(margin + 560, btnRow1Y);
+        btnImport.Location = new Point(margin + 120, btnRow1Y);
+        btnImportPdf.Location = new Point(margin + 240, btnRow1Y);
+        btnAssess.Location = new Point(margin + 360, btnRow1Y);
+        btnDetails.Location = new Point(margin + 470, btnRow1Y);
+        btnDelete.Location = new Point(margin + 580, btnRow1Y);
 
+        // Row 2 buttons
         btnUserDetails.Location = new Point(margin, btnRow2Y);
         btnLogout.Location = new Point(margin + 140, btnRow2Y);
         btnViewLogs.Location = new Point(margin + 280, btnRow2Y);
@@ -151,6 +261,14 @@ public partial class MainForm : Form
     private void btnImport_Click(object sender, EventArgs e)
     {
         var form = new ImportForm(_username);
+        form.ShowDialog();
+        LoadCandidates();
+    }
+
+    // Opens the Import PDFs form
+    private void btnImportPdf_Click(object sender, EventArgs e)
+    {
+        var form = new PdfImportForm(_username);
         form.ShowDialog();
         LoadCandidates();
     }
@@ -183,17 +301,14 @@ public partial class MainForm : Form
         {
             var checkValue = row.Cells["Select"].Value;
             if (checkValue != null && (bool)checkValue)
-            {
                 checkedIds.Add((int)row.Cells["Id"].Value);
-            }
         }
 
         if (checkedIds.Count == 0)
         {
             if (dataGridView1.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please check or select a candidate to delete.",
-                    "No Selection");
+                MessageBox.Show("Please check or select a candidate to delete.", "No Selection");
                 return;
             }
             checkedIds.Add((int)dataGridView1.SelectedRows[0].Cells["Id"].Value);

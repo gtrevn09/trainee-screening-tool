@@ -19,6 +19,7 @@ partial class MainForm
         dataGridView1 = new DataGridView();
         btnAddCandidate = new Button();
         btnImport = new Button();
+        btnImportPdf = new Button();
         btnAssess = new Button();
         btnDetails = new Button();
         btnDelete = new Button();
@@ -26,14 +27,14 @@ partial class MainForm
         btnLogout = new Button();
         btnViewLogs = new Button();
 
-        // Search box
+        // Search box at the top
         txtSearch.Location = new Point(12, 12);
         txtSearch.Size = new Size(760, 25);
         txtSearch.Name = "txtSearch";
         txtSearch.PlaceholderText = "Search by name or email...";
         txtSearch.TextChanged += txtSearch_TextChanged;
 
-        // DataGridView
+        // DataGridView below search box
         dataGridView1.Location = new Point(12, 47);
         dataGridView1.Size = new Size(760, 315);
         dataGridView1.Name = "dataGridView1";
@@ -41,33 +42,38 @@ partial class MainForm
         dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         dataGridView1.MultiSelect = true;
 
-        // Row 1 buttons
+        // Row 1 buttons - candidate actions
         btnAddCandidate.Location = new Point(12, 375);
-        btnAddCandidate.Size = new Size(130, 35);
+        btnAddCandidate.Size = new Size(120, 35);
         btnAddCandidate.Text = "Add Candidate";
         btnAddCandidate.Click += btnAddCandidate_Click;
 
-        btnImport.Location = new Point(152, 375);
-        btnImport.Size = new Size(130, 35);
+        btnImport.Location = new Point(142, 375);
+        btnImport.Size = new Size(120, 35);
         btnImport.Text = "Import CSV";
         btnImport.Click += btnImport_Click;
 
-        btnAssess.Location = new Point(292, 375);
-        btnAssess.Size = new Size(130, 35);
+        btnImportPdf.Location = new Point(272, 375);
+        btnImportPdf.Size = new Size(120, 35);
+        btnImportPdf.Text = "Import PDFs";
+        btnImportPdf.Click += btnImportPdf_Click;
+
+        btnAssess.Location = new Point(402, 375);
+        btnAssess.Size = new Size(100, 35);
         btnAssess.Text = "Assess";
         btnAssess.Click += btnAssess_Click;
 
-        btnDetails.Location = new Point(432, 375);
-        btnDetails.Size = new Size(130, 35);
+        btnDetails.Location = new Point(512, 375);
+        btnDetails.Size = new Size(100, 35);
         btnDetails.Text = "Details";
         btnDetails.Click += btnDetails_Click;
 
-        btnDelete.Location = new Point(572, 375);
-        btnDelete.Size = new Size(130, 35);
+        btnDelete.Location = new Point(622, 375);
+        btnDelete.Size = new Size(100, 35);
         btnDelete.Text = "Delete";
         btnDelete.Click += btnDelete_Click;
 
-        // Row 2 buttons
+        // Row 2 buttons - account actions
         btnUserDetails.Location = new Point(12, 420);
         btnUserDetails.Size = new Size(130, 35);
         btnUserDetails.Text = "User Details";
@@ -85,12 +91,13 @@ partial class MainForm
         btnViewLogs.Text = "View Logs";
         btnViewLogs.Click += btnViewLogs_Click;
 
-        // Add all controls
+        // Add all controls to the form
         ClientSize = new Size(784, 470);
         Controls.Add(txtSearch);
         Controls.Add(dataGridView1);
         Controls.Add(btnAddCandidate);
         Controls.Add(btnImport);
+        Controls.Add(btnImportPdf);
         Controls.Add(btnAssess);
         Controls.Add(btnDetails);
         Controls.Add(btnDelete);
@@ -105,6 +112,7 @@ partial class MainForm
     private DataGridView dataGridView1;
     private Button btnAddCandidate;
     private Button btnImport;
+    private Button btnImportPdf;
     private Button btnAssess;
     private Button btnDetails;
     private Button btnDelete;
