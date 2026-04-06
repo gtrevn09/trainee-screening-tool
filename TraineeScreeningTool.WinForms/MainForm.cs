@@ -375,10 +375,14 @@ public partial class MainForm : Form
         LoadCandidates();
     }
 
-    // Opens the Job Placements form
+    // Opens the Job Placements form, pre-loading the selected candidate if one is highlighted
     private void btnPlacements_Click(object sender, EventArgs e)
     {
-        var form = new JobPlacementsForm(_username);
+        int? selectedId = null;
+        if (dataGridView1.SelectedRows.Count > 0)
+            selectedId = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
+
+        var form = new JobPlacementsForm(_username, selectedId);
         form.ShowDialog();
         LoadPlacementNotification();
     }
