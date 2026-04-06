@@ -15,6 +15,9 @@ public class ApplicationDbContext : DbContext
     // Represents the AppLogs table in the database
     public DbSet<AppLog> AppLogs { get; set; }
 
+    // Represents the JobPlacements table in the database
+    public DbSet<JobPlacement> JobPlacements { get; set; }
+
     // Configures the database to use SQLite and sets the file location
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {

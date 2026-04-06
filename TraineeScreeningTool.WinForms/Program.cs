@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TraineeScreeningTool.WinForms.Data;
 
 namespace TraineeScreeningTool.WinForms;
@@ -13,6 +14,18 @@ static class Program
         using var context = new ApplicationDbContext();
         
         context.Database.EnsureCreated();
+
+        // Create JobPlacements table for existing databases that pre-date this feature
+        context.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS JobPlacements (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                CandidateId INTEGER NOT NULL,
+                CareerPathway TEXT NOT NULL DEFAULT '',
+                PlacementDate TEXT NOT NULL,
+                ExitDate TEXT NULL,
+                IsSuccessful INTEGER NOT NULL DEFAULT 0
+            );
+        ");
 
         // Show login form first
         var loginForm = new LoginForm();
