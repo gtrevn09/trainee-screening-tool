@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TraineeScreeningTool.WinForms.Data;
 using TraineeScreeningTool.WinForms.Models;
+using System.Linq;
 
 namespace TraineeScreeningTool.WinForms;
 
@@ -21,6 +22,7 @@ public partial class MainForm : Form
         InitializeComponent();
         _username = username;
         LoadCandidates();
+        LoadPlacementNotification();
 
         // Wire up mouse events for drag-to-select
         dataGridView1.MouseDown += dataGridView1_MouseDown;
@@ -30,6 +32,34 @@ public partial class MainForm : Form
         // Wire up cell edit events to save changes to database
         dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
         dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;
+    }
+
+    // Checks for placements approaching or past 6 months and shows a notification banner
+    private void LoadPlacementNotification()
+    {
+        using var context = new ApplicationDbContext();
+        var allPlacements = context.JobPlacements.AsEnumerable().ToList();
+        int reviewCount = allPlacements.Count(p => p.NeedsReview);
+
+        if (reviewCount > 0)
+        {
+            lblNotification.Text =
+                $"⚠  {reviewCount} job placement{(reviewCount == 1 ? "" : "s")} " +
+                $"need{(reviewCount == 1 ? "s" : "")} review (approaching or past 6 months) — Click here to view";
+            pnlNotification.Visible = true;
+        }
+        else
+        {
+            pnlNotification.Visible = false;
+        }
+    }
+
+    // Clicking the notification banner opens the Job Placements form
+    private void pnlNotification_Click(object sender, EventArgs e)
+    {
+        var form = new JobPlacementsForm(_username);
+        form.ShowDialog();
+        LoadPlacementNotification();
     }
 
     // Fetches all candidates from the database and displays them in the grid
@@ -226,14 +256,19 @@ public partial class MainForm : Form
         int margin = 12;
         int btnRow1Y = ClientSize.Height - 80;
         int btnRow2Y = ClientSize.Height - 40;
+        int notificationY = margin + 32;
+        int gridY = notificationY + (pnlNotification.Visible ? 34 : 4);
 
         txtSearch.Location = new Point(margin, margin);
         txtSearch.Size = new Size(ClientSize.Width - margin * 2, 25);
 
-        dataGridView1.Location = new Point(margin, margin + 35);
+        pnlNotification.Location = new Point(margin, notificationY);
+        pnlNotification.Size = new Size(ClientSize.Width - margin * 2, 28);
+
+        dataGridView1.Location = new Point(margin, notificationY + 34);
         dataGridView1.Size = new Size(
             ClientSize.Width - margin * 2,
-            ClientSize.Height - 135);
+            ClientSize.Height - 155);
 
         // Row 1 buttons
         btnAddCandidate.Location = new Point(margin, btnRow1Y);
@@ -244,9 +279,10 @@ public partial class MainForm : Form
         btnDelete.Location = new Point(margin + 580, btnRow1Y);
 
         // Row 2 buttons
-        btnUserDetails.Location = new Point(margin, btnRow2Y);
-        btnLogout.Location = new Point(margin + 140, btnRow2Y);
-        btnViewLogs.Location = new Point(margin + 280, btnRow2Y);
+        btnPlacements.Location = new Point(margin, btnRow2Y);
+        btnUserDetails.Location = new Point(margin + 140, btnRow2Y);
+        btnLogout.Location = new Point(margin + 280, btnRow2Y);
+        btnViewLogs.Location = new Point(margin + 420, btnRow2Y);
     }
 
     // Opens the Add Candidate form
@@ -336,6 +372,14 @@ public partial class MainForm : Form
 
         context.SaveChanges();
         LoadCandidates();
+    }
+
+    // Opens the Job Placements form
+    private void btnPlacements_Click(object sender, EventArgs e)
+    {
+        var form = new JobPlacementsForm(_username);
+        form.ShowDialog();
+        LoadPlacementNotification();
     }
 
     // Opens the User Details form
