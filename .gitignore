@@ -35,3 +35,9 @@ Thumbs.db
 # Copilot cache
 .vs/TraineeScreeningTool/copilot-chat/
 .vs/TraineeScreeningTool/CopilotIndices/
+
+obj/
+bin/
+*.user
+*.suo
+.vs/
