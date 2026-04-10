@@ -324,7 +324,7 @@ public partial class MainForm : Form
     {
         if (dataGridView1.SelectedRows.Count == 0) return;
         int id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
-        var form = new DetailsForm(id);
+        var form = new DetailsForm(id, _username);
         form.ShowDialog();
     }
 
