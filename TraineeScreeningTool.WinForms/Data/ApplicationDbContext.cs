@@ -15,10 +15,15 @@ public class ApplicationDbContext : DbContext
     // Represents the AppLogs table in the database
     public DbSet<AppLog> AppLogs { get; set; }
 
+    // Represents the JobPlacements table in the database
+    public DbSet<JobPlacement> JobPlacements { get; set; }
+
+    // Represents the Certifications table in the database
+    public DbSet<Certification> Certifications { get; set; }
+
     // Configures the database to use SQLite and sets the file location
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        // Gets the folder where the .exe is running from and puts the db there
         var folder = AppDomain.CurrentDomain.BaseDirectory;
         var dbPath = Path.Combine(folder, "trainees.db");
         options.UseSqlite($"Data Source={dbPath}");
@@ -31,7 +36,6 @@ public class ApplicationDbContext : DbContext
         {
             Id = 1,
             Username = "admin",
-            // Default password is "lifeworks123" - hashed for security
             PasswordHash = HashPassword("lifeworks123"),
             Role = "Admin",
             IsActive = true
@@ -58,6 +62,6 @@ public class ApplicationDbContext : DbContext
             Timestamp = DateTime.Now,
             Success = success
         });
-        SaveChanges(); // Save the log entry immediately
+        SaveChanges();
     }
 }
