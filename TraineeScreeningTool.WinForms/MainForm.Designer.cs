@@ -29,6 +29,7 @@ partial class MainForm
         btnUserDetails = new Button();
         btnLogout = new Button();
         btnViewLogs = new Button();
+        btnAnalytics = new Button();
 
         // Search box at the top
         txtSearch.Location = new Point(12, 12);
@@ -119,6 +120,11 @@ partial class MainForm
         btnViewLogs.Text = "View Logs";
         btnViewLogs.Click += btnViewLogs_Click;
 
+        btnAnalytics.Location = new Point(572, 420);
+        btnAnalytics.Size = new Size(130, 35);
+        btnAnalytics.Text = "Analytics";
+        btnAnalytics.Click += btnAnalytics_Click;
+
         // Add all controls to the form
         ClientSize = new Size(784, 470);
         Controls.Add(txtSearch);
@@ -134,6 +140,7 @@ partial class MainForm
         Controls.Add(btnUserDetails);
         Controls.Add(btnLogout);
         Controls.Add(btnViewLogs);
+        Controls.Add(btnAnalytics);
         Text = "LIFE Works Trainee Screening Tool";
     }
 
@@ -152,4 +159,5 @@ partial class MainForm
     private Button btnUserDetails;
     private Button btnLogout;
     private Button btnViewLogs;
+    private Button btnAnalytics;
 }
