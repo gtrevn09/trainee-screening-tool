@@ -68,6 +68,8 @@ partial class PdfImportForm
         btnImport.Click += btnImport_Click;
 
         // Add all controls
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(584, 250);
         Controls.Add(lblTitle);
         Controls.Add(lblFolder);

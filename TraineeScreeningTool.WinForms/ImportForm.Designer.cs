@@ -79,6 +79,8 @@ partial class ImportForm
         // 
         // ImportForm
         // 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(531, 294);
         Controls.Add(lblTitle);
         Controls.Add(lblFile);

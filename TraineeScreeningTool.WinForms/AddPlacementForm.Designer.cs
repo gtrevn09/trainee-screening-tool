@@ -70,6 +70,8 @@ partial class AddPlacementForm
         btnCancel.Text = "Cancel";
         btnCancel.Click += btnCancel_Click;
 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(470, 200);
         Controls.Add(lblCandidate);
         Controls.Add(cmbCandidate);

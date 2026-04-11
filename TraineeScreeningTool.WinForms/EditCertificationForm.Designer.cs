@@ -142,6 +142,8 @@ partial class EditCertificationForm
             btnSave, btnDelete, btnCancel
         });
 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(490, y + 52);
         Text = "Edit Certification";
         FormBorderStyle = FormBorderStyle.FixedDialog;
