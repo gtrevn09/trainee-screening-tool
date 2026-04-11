@@ -151,6 +151,8 @@ partial class AddCertificationForm
             btnSave,         btnCancel
         });
 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(520, y + 50);
         Text = "Add Certification";
         FormBorderStyle = FormBorderStyle.FixedDialog;

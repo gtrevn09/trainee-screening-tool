@@ -162,6 +162,8 @@ partial class AnalyticsForm
         pnlButtons.Controls.Add(btnClose);
 
         // ── Form ──────────────────────────────────────────────────────────────
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(996, 636);
         Controls.Add(pnlStats);
         Controls.Add(tabMain);

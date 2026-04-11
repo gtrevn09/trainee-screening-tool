@@ -114,6 +114,8 @@ partial class UserDetailsForm
         btnChangePassword.Click += btnChangePassword_Click;
 
         // Add all controls
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(404, startY + rowH * 7 + 20);
         Controls.Add(lblTitle);
         Controls.Add(lblUsername);

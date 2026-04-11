@@ -170,6 +170,8 @@ partial class AssessForm
 
         Controls.Add(panel);
 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(380, 600);
         Text = "Assess Candidate";
         StartPosition = FormStartPosition.CenterScreen;

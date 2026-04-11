@@ -213,6 +213,8 @@ partial class DetailsForm
 
         Controls.Add(scrollPanel);
 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(640, 700);
         Text = "Candidate Details";
         StartPosition = FormStartPosition.CenterScreen;

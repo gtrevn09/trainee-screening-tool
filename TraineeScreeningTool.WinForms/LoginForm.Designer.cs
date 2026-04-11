@@ -69,6 +69,8 @@ partial class LoginForm
         btnForgotPassword.Click += btnForgotPassword_Click;
 
         // Add controls to form
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(400, 250);
         Controls.Add(lblTitle);
         Controls.Add(lblUsername);

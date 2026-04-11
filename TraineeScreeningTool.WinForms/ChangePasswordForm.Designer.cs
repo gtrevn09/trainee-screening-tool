@@ -72,6 +72,8 @@ partial class ChangePasswordForm
         btnSave.Click += btnSave_Click;
 
         // Add controls to form
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(380, 225);
         Controls.Add(lblTitle);
         Controls.Add(lblCurrent);
