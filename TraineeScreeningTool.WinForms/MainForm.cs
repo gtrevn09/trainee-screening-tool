@@ -283,6 +283,7 @@ public partial class MainForm : Form
         btnUserDetails.Location = new Point(margin + 140, btnRow2Y);
         btnLogout.Location = new Point(margin + 280, btnRow2Y);
         btnViewLogs.Location = new Point(margin + 420, btnRow2Y);
+        btnAnalytics.Location = new Point(margin + 560, btnRow2Y);
     }
 
     // Opens the Add Candidate form
@@ -393,6 +394,13 @@ public partial class MainForm : Form
     private void btnViewLogs_Click(object sender, EventArgs e)
     {
         var form = new LogViewerForm();
+        form.ShowDialog();
+    }
+
+    // Opens the Analytics form
+    private void btnAnalytics_Click(object sender, EventArgs e)
+    {
+        var form = new AnalyticsForm(_username);
         form.ShowDialog();
     }
 
