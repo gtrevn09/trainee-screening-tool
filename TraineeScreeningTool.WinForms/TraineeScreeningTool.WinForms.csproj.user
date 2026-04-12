@@ -4,6 +4,9 @@
     <Compile Update="AddCandidateForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="AddPlacementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="AssessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -22,6 +25,9 @@
     <Compile Update="ImportForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="JobPlacementsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -32,6 +38,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="PdfImportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UpdatePlacementForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UserDetailsForm.cs">

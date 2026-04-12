@@ -10,7 +10,6 @@ static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        // Set up database
         using var context = new ApplicationDbContext();
         
         context.Database.EnsureCreated();
@@ -27,7 +26,19 @@ static class Program
             );
         ");
 
-        // Show login form first
+        // Create Certifications table for existing databases that pre-date this feature
+        context.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS Certifications (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                CandidateId INTEGER NOT NULL,
+                CertName TEXT NOT NULL DEFAULT '',
+                Status TEXT NOT NULL DEFAULT 'Pursuing',
+                Result TEXT NULL,
+                Date TEXT NULL,
+                Notes TEXT NOT NULL DEFAULT ''
+            );
+        ");
+
         var loginForm = new LoginForm();
         loginForm.ShowDialog();
 
@@ -38,14 +49,12 @@ static class Program
 
             if (user != null && user.IsFirstLogin)
             {
-                // First time login - show full setup form
                 var setupForm = new FirstTimeSetupForm(loginForm.LoggedInUsername);
                 setupForm.ShowDialog();
                 if (!setupForm.SetupCompleted) return;
             }
             else if (user != null && user.MustChangePassword)
             {
-                // Password reset - force them to change password before continuing
                 MessageBox.Show(
                     "You must change your password before continuing.",
                     "Password Change Required",
@@ -55,12 +64,10 @@ static class Program
                 var changePasswordForm = new ChangePasswordForm(loginForm.LoggedInUsername);
                 changePasswordForm.ShowDialog();
 
-                // Mark password change as complete
                 user.MustChangePassword = false;
                 context.SaveChanges();
             }
 
-            // Open the main dashboard
             Application.Run(new MainForm(loginForm.LoggedInUsername));
         }
     }

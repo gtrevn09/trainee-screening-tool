@@ -78,6 +78,8 @@ partial class ForgotPasswordForm
         btnSubmit.Click += btnSubmit_Click;
 
         // Add all controls
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(424, 275);
         Controls.Add(lblTitle);
         Controls.Add(lblSubtitle);

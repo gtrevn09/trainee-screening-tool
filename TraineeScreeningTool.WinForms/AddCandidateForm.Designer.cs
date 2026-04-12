@@ -61,6 +61,8 @@ partial class AddCandidateForm
         btnSave.Click += btnSave_Click;
 
         // Add controls to form
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(350, 180);
         Controls.Add(lblFirstName);
         Controls.Add(txtFirstName);

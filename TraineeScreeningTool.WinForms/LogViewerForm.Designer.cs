@@ -35,11 +35,13 @@ partial class LogViewerForm
         dataGridViewLogs.ReadOnly = true;
         dataGridViewLogs.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         dataGridViewLogs.MultiSelect = false;
+        dataGridViewLogs.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 
         // Refresh button
         btnRefresh.Location = new Point(12, 510);
         btnRefresh.Size = new Size(130, 35);
         btnRefresh.Text = "Refresh";
+        btnRefresh.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnRefresh.Click += btnRefresh_Click;
 
         // Clear Logs button
@@ -48,9 +50,12 @@ partial class LogViewerForm
         btnClearLogs.Text = "Clear All Logs";
         btnClearLogs.BackColor = Color.IndianRed;
         btnClearLogs.ForeColor = Color.White;
+        btnClearLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnClearLogs.Click += btnClearLogs_Click;
 
         // Add all controls
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(784, 560);
         Controls.Add(lblTitle);
         Controls.Add(dataGridViewLogs);
@@ -58,6 +63,8 @@ partial class LogViewerForm
         Controls.Add(btnClearLogs);
         Text = "Activity Log";
         StartPosition = FormStartPosition.CenterScreen;
+        FormBorderStyle = FormBorderStyle.Sizable;
+        MinimumSize = new Size(600, 400);
     }
 
     // Declare all controls

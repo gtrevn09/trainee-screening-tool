@@ -283,6 +283,7 @@ public partial class MainForm : Form
         btnUserDetails.Location = new Point(margin + 140, btnRow2Y);
         btnLogout.Location = new Point(margin + 280, btnRow2Y);
         btnViewLogs.Location = new Point(margin + 420, btnRow2Y);
+        btnAnalytics.Location = new Point(margin + 560, btnRow2Y);
     }
 
     // Opens the Add Candidate form
@@ -324,7 +325,7 @@ public partial class MainForm : Form
     {
         if (dataGridView1.SelectedRows.Count == 0) return;
         int id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
-        var form = new DetailsForm(id);
+        var form = new DetailsForm(id, _username);
         form.ShowDialog();
     }
 
@@ -374,10 +375,14 @@ public partial class MainForm : Form
         LoadCandidates();
     }
 
-    // Opens the Job Placements form
+    // Opens the Job Placements form, pre-loading the selected candidate if one is highlighted
     private void btnPlacements_Click(object sender, EventArgs e)
     {
-        var form = new JobPlacementsForm(_username);
+        int? selectedId = null;
+        if (dataGridView1.SelectedRows.Count > 0)
+            selectedId = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
+
+        var form = new JobPlacementsForm(_username, selectedId);
         form.ShowDialog();
         LoadPlacementNotification();
     }
@@ -393,6 +398,13 @@ public partial class MainForm : Form
     private void btnViewLogs_Click(object sender, EventArgs e)
     {
         var form = new LogViewerForm();
+        form.ShowDialog();
+    }
+
+    // Opens the Analytics form
+    private void btnAnalytics_Click(object sender, EventArgs e)
+    {
+        var form = new AnalyticsForm(_username);
         form.ShowDialog();
     }
 

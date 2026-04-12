@@ -135,6 +135,8 @@ partial class UpdatePlacementForm
 
         row += 50;
 
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(480, row);
         Controls.Add(lblCandidateCaption);
         Controls.Add(lblCandidateName);

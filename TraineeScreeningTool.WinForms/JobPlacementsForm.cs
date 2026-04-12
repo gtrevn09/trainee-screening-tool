@@ -7,14 +7,16 @@ namespace TraineeScreeningTool.WinForms;
 public partial class JobPlacementsForm : Form
 {
     private readonly string _username;
+    private readonly int? _preselectedCandidateId;
 
     // Holds the display rows so we can read placement IDs for update/delete
     private List<PlacementRow> _rows = new();
 
-    public JobPlacementsForm(string username)
+    public JobPlacementsForm(string username, int? candidateId = null)
     {
         InitializeComponent();
         _username = username;
+        _preselectedCandidateId = candidateId;
     }
 
     protected override void OnLoad(EventArgs e)
@@ -22,6 +24,13 @@ public partial class JobPlacementsForm : Form
         base.OnLoad(e);
         LoadFilter();
         LoadPlacements();
+
+        if (_preselectedCandidateId.HasValue)
+        {
+            var addForm = new AddPlacementForm(_username, _preselectedCandidateId.Value);
+            if (addForm.ShowDialog() == DialogResult.OK)
+                LoadPlacements();
+        }
     }
 
     // Populates the filter dropdown with "All" + each pathway

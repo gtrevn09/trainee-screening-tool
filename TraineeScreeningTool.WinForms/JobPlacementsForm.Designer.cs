@@ -33,6 +33,7 @@ partial class JobPlacementsForm
         pnlLegend.Location = new Point(12, 12);
         pnlLegend.Size = new Size(500, 28);
         pnlLegend.BorderStyle = BorderStyle.FixedSingle;
+        pnlLegend.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
         lblLegendTitle.Text = "Key:";
         lblLegendTitle.Location = new Point(4, 5);
@@ -72,6 +73,7 @@ partial class JobPlacementsForm
         // --- Filters panel ---
         pnlFilters.Location = new Point(12, 48);
         pnlFilters.Size = new Size(760, 32);
+        pnlFilters.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
         lblFilterPathway.Text = "Filter by Pathway:";
         lblFilterPathway.Location = new Point(0, 6);
@@ -100,6 +102,7 @@ partial class JobPlacementsForm
         // --- DataGridView ---
         dgvPlacements.Location = new Point(12, 110);
         dgvPlacements.Size = new Size(960, 380);
+        dgvPlacements.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dgvPlacements.Name = "dgvPlacements";
         dgvPlacements.ReadOnly = true;
         dgvPlacements.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -112,6 +115,7 @@ partial class JobPlacementsForm
         // --- Buttons panel ---
         pnlButtons.Location = new Point(12, 500);
         pnlButtons.Size = new Size(960, 45);
+        pnlButtons.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
         btnAdd.Location = new Point(0, 5);
         btnAdd.Size = new Size(150, 35);
@@ -145,6 +149,8 @@ partial class JobPlacementsForm
         pnlButtons.Controls.Add(btnClose);
 
         // Form setup
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(984, 560);
         Controls.Add(pnlLegend);
         Controls.Add(pnlFilters);
