@@ -1,44 +1,83 @@
 using Microsoft.EntityFrameworkCore;
-using TraineeScreeningTool.Data;
+using TraineeScreeningTool.WinForms.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace TraineeScreeningTool.WinForms;
 
-// 1. Add services to the container.
-builder.Services.AddControllersWithViews();
-
-// 2. Register the SQLite Database Context
-// This tells the app to use "trainees.db" as the local SQL Lite file
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite("Data Source=trainees.db"));
-
-var app = builder.Build();
-
-// 3. AUTOMATIC DATABASE CREATION
-// This creates the .db file and tables automatically if they don't exist
-using (var scope = app.Services.CreateScope())
+static class Program
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.EnsureCreated();
+    [STAThread]
+    static void Main()
+    {
+        ApplicationConfiguration.Initialize();
+
+        using var context = new ApplicationDbContext();
+        
+        context.Database.EnsureCreated();
+
+        // Create JobPlacements table for existing databases that pre-date this feature
+        context.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS JobPlacements (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                CandidateId INTEGER NOT NULL,
+                CareerPathway TEXT NOT NULL DEFAULT '',
+                PlacementDate TEXT NOT NULL,
+                ExitDate TEXT NULL,
+                IsSuccessful INTEGER NOT NULL DEFAULT 0
+            );
+        ");
+
+        // Create Certifications table for existing databases that pre-date this feature
+        context.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS Certifications (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                CandidateId INTEGER NOT NULL,
+                CertName TEXT NOT NULL DEFAULT '',
+                Status TEXT NOT NULL DEFAULT 'Pursuing',
+                Result TEXT NULL,
+                Date TEXT NULL,
+                Notes TEXT NOT NULL DEFAULT ''
+            );
+        ");
+
+        // Add PdfFolderPath column for existing databases that pre-date this feature
+        try
+        {
+            context.Database.ExecuteSqlRaw(@"
+                ALTER TABLE Candidates ADD COLUMN PdfFolderPath TEXT NULL;
+            ");
+        }
+        catch { /* Column already exists — safe to ignore */ }
+
+        var loginForm = new LoginForm();
+        loginForm.ShowDialog();
+
+        if (loginForm.LoginSuccessful)
+        {
+            var user = context.Users.FirstOrDefault(u =>
+                u.Username == loginForm.LoggedInUsername);
+
+            if (user != null && user.IsFirstLogin)
+            {
+                var setupForm = new FirstTimeSetupForm(loginForm.LoggedInUsername);
+                setupForm.ShowDialog();
+                if (!setupForm.SetupCompleted) return;
+            }
+            else if (user != null && user.MustChangePassword)
+            {
+                MessageBox.Show(
+                    "You must change your password before continuing.",
+                    "Password Change Required",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                var changePasswordForm = new ChangePasswordForm(loginForm.LoggedInUsername);
+                changePasswordForm.ShowDialog();
+
+                user.MustChangePassword = false;
+                context.SaveChanges();
+            }
+
+            Application.Run(new MainForm(loginForm.LoggedInUsername));
+        }
+    }
 }
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-app.Run();
