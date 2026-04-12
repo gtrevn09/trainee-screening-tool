@@ -4,7 +4,13 @@
     <Compile Update="AddCandidateForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="AddCertificationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="AddPlacementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AnalyticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="AssessForm.cs">
@@ -14,6 +20,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="DetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EditCertificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FirstTimeSetupForm.cs">

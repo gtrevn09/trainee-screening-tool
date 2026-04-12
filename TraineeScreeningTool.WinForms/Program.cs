@@ -11,7 +11,7 @@ static class Program
         ApplicationConfiguration.Initialize();
 
         using var context = new ApplicationDbContext();
-        
+       
         context.Database.EnsureCreated();
 
         // Create JobPlacements table for existing databases that pre-date this feature

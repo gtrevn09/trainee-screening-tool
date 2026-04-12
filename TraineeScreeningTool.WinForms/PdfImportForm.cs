@@ -192,10 +192,6 @@ public partial class PdfImportForm : Form
         }
 
         // CMRA - same split pattern
-        // Line N: "CMRA"
-        // Line N+1: "Criteria Mechanical Reasoning Assessment"
-        // Line N+2: description
-        // Line N+3: "7 5"
         int cmraIdx = FindExact(lines, "CMRA");
         if (cmraIdx >= 0 && cmraIdx + 3 < lines.Count)
         {
@@ -207,10 +203,6 @@ public partial class PdfImportForm : Form
         }
 
         // CBST - same split pattern
-        // Line N: "CBST"
-        // Line N+1: "Criteria Basic Skills Test"
-        // Line N+2: description
-        // Line N+3: "9 2"
         int cbstIdx = FindExact(lines, "CBST");
         if (cbstIdx >= 0 && cbstIdx + 3 < lines.Count)
         {
@@ -239,7 +231,6 @@ public partial class PdfImportForm : Form
         int clikIdx = FindExact(lines, "CLIK");
         if (clikIdx >= 0)
         {
-            // Proficiency within 6 lines of CLIK
             for (int i = clikIdx + 1; i < Math.Min(clikIdx + 7, lines.Count); i++)
             {
                 if (lines[i].Contains("Proficient") ||
@@ -250,7 +241,6 @@ public partial class PdfImportForm : Form
                 }
             }
 
-            // Raw score follows "Overall Score"
             int overallIdx = FindExact(lines, "Overall Score", clikIdx);
             if (overallIdx >= 0 && overallIdx + 1 < lines.Count)
                 if (int.TryParse(lines[overallIdx + 1], out int raw))
@@ -258,9 +248,6 @@ public partial class PdfImportForm : Form
         }
 
         // Typing - numbers appear BEFORE their labels
-        // Line 57: 42, Line 58: WPM
-        // Line 59: 2,  Line 60: Errors
-        // Line 63: 68, Line 64: Percentile
         int ttIdx = FindExact(lines, "TT");
         if (ttIdx >= 0)
         {
@@ -291,7 +278,6 @@ public partial class PdfImportForm : Form
                 }
             }
 
-            // Sub scores - number appears 2 lines after label
             int divIdx = FindExact(lines, "Divided Attention", castIdx);
             if (divIdx >= 0)
                 for (int i = divIdx + 1; i < Math.Min(divIdx + 3, lines.Count); i++)
@@ -313,13 +299,7 @@ public partial class PdfImportForm : Form
                     if (int.TryParse(lines[i], out int v)) { candidate.CASTReactionTime = v; break; }
         }
 
-        // Word365 - iText splits into separate lines:
-        // Line N:   "WORD365"
-        // Line N+1: "Word 365"
-        // Line N+2: description
-        // Line N+3: "Score Proficiency"
-        // Line N+4: "1"    <- raw score
-        // Line N+5: "Beginner" <- proficiency
+        // Word365
         int wordIdx = FindExact(lines, "WORD365");
         if (wordIdx >= 0)
         {
@@ -332,7 +312,7 @@ public partial class PdfImportForm : Form
             }
         }
 
-        // Excel365 - same split pattern
+        // Excel365
         int excelIdx = FindExact(lines, "EXCEL365");
         if (excelIdx >= 0)
         {
@@ -346,11 +326,7 @@ public partial class PdfImportForm : Form
         }
 
         // CSAP recommendation from summary
-        // Line 104: "CSAP"
-        // Line 105: "Customer Service Aptitude Profile"
-        // Line 106: description
-        // Line 107: "Not Recommended"
-        int csapSumIdx = FindExact(lines, "CSAP", 90); // start from line 90 to skip earlier CSAP mention
+        int csapSumIdx = FindExact(lines, "CSAP", 90);
         if (csapSumIdx >= 0)
         {
             for (int i = csapSumIdx + 1; i < Math.Min(csapSumIdx + 5, lines.Count); i++)
@@ -370,6 +346,9 @@ public partial class PdfImportForm : Form
         var nameParts = filename.Split('-');
         candidate.Email = $"{nameParts[0].ToLower()}.{nameParts[1].ToLower()}@lifeworks.placeholder";
 
+        // Store the folder containing the PDFs so they can be viewed later
+        candidate.PdfFolderPath = Path.GetDirectoryName(filePath);
+
         return candidate;
     }
 
@@ -377,7 +356,6 @@ public partial class PdfImportForm : Form
     {
         var lines = ExtractAllLines(filePath);
 
-        // Recommendation
         var recLine = lines.FirstOrDefault(l =>
             l == "Not Recommended" ||
             l == "Recommended" ||
@@ -449,5 +427,9 @@ public partial class PdfImportForm : Form
         existing.CSAPGoalOrientation = parsed.CSAPGoalOrientation;
         existing.CSAPMotivation = parsed.CSAPMotivation;
         existing.CSAPTeamPlayer = parsed.CSAPTeamPlayer;
+
+        // Update PDF folder path if a new one was parsed
+        if (!string.IsNullOrEmpty(parsed.PdfFolderPath))
+            existing.PdfFolderPath = parsed.PdfFolderPath;
     }
 }
