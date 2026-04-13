@@ -22,6 +22,7 @@ partial class MainForm
         btnAddCandidate = new Button();
         btnImport = new Button();
         btnImportPdf = new Button();
+        btnViewPdf = new Button();
         btnAssess = new Button();
         btnDetails = new Button();
         btnDelete = new Button();
@@ -86,19 +87,25 @@ partial class MainForm
         btnImportPdf.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnImportPdf.Click += btnImportPdf_Click;
 
-        btnAssess.Location = new Point(402, 375);
+        btnViewPdf.Location = new Point(402, 375);
+        btnViewPdf.Size = new Size(100, 35);
+        btnViewPdf.Text = "View PDF";
+        btnViewPdf.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        btnViewPdf.Click += btnViewPdf_Click;
+
+        btnAssess.Location = new Point(512, 375);
         btnAssess.Size = new Size(100, 35);
         btnAssess.Text = "Assess";
         btnAssess.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnAssess.Click += btnAssess_Click;
 
-        btnDetails.Location = new Point(512, 375);
+        btnDetails.Location = new Point(622, 375);
         btnDetails.Size = new Size(100, 35);
         btnDetails.Text = "Details";
         btnDetails.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnDetails.Click += btnDetails_Click;
 
-        btnDelete.Location = new Point(622, 375);
+        btnDelete.Location = new Point(732, 375);
         btnDelete.Size = new Size(100, 35);
         btnDelete.Text = "Delete";
         btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
@@ -150,6 +157,7 @@ partial class MainForm
         Controls.Add(btnAddCandidate);
         Controls.Add(btnImport);
         Controls.Add(btnImportPdf);
+        Controls.Add(btnViewPdf);
         Controls.Add(btnAssess);
         Controls.Add(btnDetails);
         Controls.Add(btnDelete);
@@ -170,6 +178,7 @@ partial class MainForm
     private Button btnAddCandidate;
     private Button btnImport;
     private Button btnImportPdf;
+    private Button btnViewPdf;
     private Button btnAssess;
     private Button btnDetails;
     private Button btnDelete;

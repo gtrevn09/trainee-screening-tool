@@ -69,4 +69,7 @@ public class Candidate
     // CLIK scores
     public string CLIKProficiency { get; set; } = string.Empty;
     public int? CLIKRawScore { get; set; }
+
+    // Path to the folder containing the imported PDFs for this candidate
+    public string? PdfFolderPath { get; set; }
 }

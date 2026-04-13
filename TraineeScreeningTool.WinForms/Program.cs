@@ -11,7 +11,7 @@ static class Program
         ApplicationConfiguration.Initialize();
 
         using var context = new ApplicationDbContext();
-        
+
         context.Database.EnsureCreated();
 
         // Create JobPlacements table for existing databases that pre-date this feature
@@ -38,6 +38,15 @@ static class Program
                 Notes TEXT NOT NULL DEFAULT ''
             );
         ");
+
+        // Add PdfFolderPath column for existing databases that pre-date this feature
+        try
+        {
+            context.Database.ExecuteSqlRaw(@"
+                ALTER TABLE Candidates ADD COLUMN PdfFolderPath TEXT NULL;
+            ");
+        }
+        catch { /* Column already exists — safe to ignore */ }
 
         var loginForm = new LoginForm();
         loginForm.ShowDialog();

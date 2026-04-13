@@ -274,9 +274,10 @@ public partial class MainForm : Form
         btnAddCandidate.Location = new Point(margin, btnRow1Y);
         btnImport.Location = new Point(margin + 120, btnRow1Y);
         btnImportPdf.Location = new Point(margin + 240, btnRow1Y);
-        btnAssess.Location = new Point(margin + 360, btnRow1Y);
-        btnDetails.Location = new Point(margin + 470, btnRow1Y);
-        btnDelete.Location = new Point(margin + 580, btnRow1Y);
+        btnViewPdf.Location = new Point(margin + 360, btnRow1Y);
+        btnAssess.Location = new Point(margin + 460, btnRow1Y);
+        btnDetails.Location = new Point(margin + 560, btnRow1Y);
+        btnDelete.Location = new Point(margin + 660, btnRow1Y);
 
         // Row 2 buttons
         btnPlacements.Location = new Point(margin, btnRow2Y);
@@ -308,6 +309,84 @@ public partial class MainForm : Form
         var form = new PdfImportForm(_username);
         form.ShowDialog();
         LoadCandidates();
+    }
+
+    // Opens the PDF files for the selected candidate in the default PDF viewer
+    private void btnViewPdf_Click(object sender, EventArgs e)
+    {
+        if (dataGridView1.SelectedRows.Count == 0)
+        {
+            MessageBox.Show("Please select a candidate first.", "No Selection");
+            return;
+        }
+
+        int id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
+
+        using var context = new ApplicationDbContext();
+        var candidate = context.Candidates.Find(id);
+
+        if (candidate == null)
+        {
+            MessageBox.Show("Candidate not found.", "Error");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(candidate.PdfFolderPath) || !Directory.Exists(candidate.PdfFolderPath))
+        {
+            MessageBox.Show(
+                "No PDF folder is linked to this candidate.\n\n" +
+                "PDFs are linked automatically when you use 'Import PDFs'. " +
+                "If the folder was moved or deleted, please re-import the PDFs.",
+                "No PDFs Found");
+            return;
+        }
+
+        // Find all PDFs belonging to this candidate in the stored folder
+        var pdfFiles = Directory.GetFiles(candidate.PdfFolderPath, "*.pdf")
+            .Where(f => Path.GetFileNameWithoutExtension(f)
+                .StartsWith($"{candidate.FirstName}-{candidate.LastName}-",
+                    StringComparison.OrdinalIgnoreCase))
+            .OrderBy(f => f)
+            .ToList();
+
+        if (pdfFiles.Count == 0)
+        {
+            // Fall back: try opening any PDF with the candidate's first name
+            pdfFiles = Directory.GetFiles(candidate.PdfFolderPath, "*.pdf")
+                .Where(f => Path.GetFileNameWithoutExtension(f)
+                    .Contains(candidate.FirstName, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(f => f)
+                .ToList();
+        }
+
+        if (pdfFiles.Count == 0)
+        {
+            var result = MessageBox.Show(
+                $"No PDF files matching '{candidate.FullName}' were found in:\n{candidate.PdfFolderPath}\n\n" +
+                "Would you like to open the folder instead?",
+                "PDFs Not Found",
+                MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+                System.Diagnostics.Process.Start("explorer.exe", candidate.PdfFolderPath);
+
+            return;
+        }
+
+        // Show a selection dialog if multiple PDFs exist
+        if (pdfFiles.Count == 1)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = pdfFiles[0],
+                UseShellExecute = true
+            });
+        }
+        else
+        {
+            var form = new PdfSelectForm(candidate.FullName, pdfFiles);
+            form.ShowDialog();
+        }
     }
 
     // Opens the Assessment form for the selected candidate

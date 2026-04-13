@@ -370,6 +370,9 @@ public partial class PdfImportForm : Form
         var nameParts = filename.Split('-');
         candidate.Email = $"{nameParts[0].ToLower()}.{nameParts[1].ToLower()}@lifeworks.placeholder";
 
+        // Store the folder containing the PDFs so they can be viewed later
+        candidate.PdfFolderPath = Path.GetDirectoryName(filePath);
+
         return candidate;
     }
 
@@ -449,5 +452,7 @@ public partial class PdfImportForm : Form
         existing.CSAPGoalOrientation = parsed.CSAPGoalOrientation;
         existing.CSAPMotivation = parsed.CSAPMotivation;
         existing.CSAPTeamPlayer = parsed.CSAPTeamPlayer;
+        if (!string.IsNullOrEmpty(parsed.PdfFolderPath))
+            existing.PdfFolderPath = parsed.PdfFolderPath;
     }
 }
