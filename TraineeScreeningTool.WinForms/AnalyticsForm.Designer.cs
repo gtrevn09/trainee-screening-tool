@@ -39,13 +39,13 @@ partial class AnalyticsForm
         pnlStats.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
         lblStatsTitle.Text = "Summary:";
-        lblStatsTitle.Location = new Point(8, 13);
-        lblStatsTitle.Size = new Size(70, 20);
+        lblStatsTitle.Location = new Point(8, 12);
+        lblStatsTitle.Size = new Size(110, 24);
         lblStatsTitle.Font = new Font(lblStatsTitle.Font, FontStyle.Bold);
-        lblStatsTitle.AutoSize = true;
+        lblStatsTitle.AutoSize = false;
 
         lblTotalCandidates.Text = "Total Candidates: —";
-        lblTotalCandidates.Location = new Point(90, 13);
+        lblTotalCandidates.Location = new Point(120, 13);
         lblTotalCandidates.Size = new Size(220, 20);
         lblTotalCandidates.AutoSize = true;
 

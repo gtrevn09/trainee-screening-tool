@@ -16,6 +16,9 @@
     <Compile Update="AssessForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Candidateprofileform.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="ChangePasswordForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -47,6 +50,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="PdfImportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Pdfselectform.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UpdatePlacementForm.cs">

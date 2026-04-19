@@ -13,27 +13,30 @@ partial class AddCertificationForm
 
     private void InitializeComponent()
     {
-        Label lblHeader       = new Label();
+        Label lblHeader = new Label();
         Label lblCandidateLbl = new Label();
-        Label lblPathwayLbl   = new Label();
-        Label lblCertLbl      = new Label();
-        Label lblStatusLbl    = new Label();
-        Label lblResultLbl    = new Label();
-        Label lblDateLbl      = new Label();
-        Label lblNotesLbl     = new Label();
+        Label lblPathwayLbl = new Label();
+        Label lblCertLbl = new Label();
+        Label lblStatusLbl = new Label();
+        Label lblResultLbl = new Label();
+        Label lblResultHint = new Label();
+        Label lblDateLbl = new Label();
+        Label lblNotesLbl = new Label();
 
         lblCandidateName = new Label();
-        cmbPathway  = new ComboBox();
+        cmbPathway = new ComboBox();
         cmbCertName = new ComboBox();
-        cmbStatus   = new ComboBox();
-        cmbResult   = new ComboBox();
-        chkHasDate  = new CheckBox();
-        dtpDate     = new DateTimePicker();
-        txtNotes    = new TextBox();
-        btnSave     = new Button();
-        btnCancel   = new Button();
+        lblOtherCert = new Label();
+        txtOtherCert = new TextBox();
+        cmbStatus = new ComboBox();
+        cmbResult = new ComboBox();
+        chkHasDate = new CheckBox();
+        dtpDate = new DateTimePicker();
+        txtNotes = new TextBox();
+        btnSave = new Button();
+        btnCancel = new Button();
 
-        int lx = 14, vx = 160, w = 330, y = 14, rh = 36;
+        int lx = 12, vx = 140, w = 280, y = 14, rh = 34;
 
         lblHeader.Text = "Add Certification";
         lblHeader.Font = new Font("Segoe UI", 12, FontStyle.Bold);
@@ -43,16 +46,16 @@ partial class AddCertificationForm
         y += 36;
 
         lblCandidateLbl.Text = "Candidate:";
-        lblCandidateLbl.Location = new Point(lx, y + 3);
-        lblCandidateLbl.Size = new Size(140, 20);
+        lblCandidateLbl.Location = new Point(lx, y + 4);
+        lblCandidateLbl.Size = new Size(122, 20);
         lblCandidateLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-        lblCandidateName.Location = new Point(vx, y + 3);
+        lblCandidateName.Location = new Point(vx, y + 4);
         lblCandidateName.Size = new Size(w, 20);
         y += rh;
 
         lblPathwayLbl.Text = "Career Pathway:";
-        lblPathwayLbl.Location = new Point(lx, y + 3);
-        lblPathwayLbl.Size = new Size(140, 20);
+        lblPathwayLbl.Location = new Point(lx, y + 4);
+        lblPathwayLbl.Size = new Size(122, 20);
         lblPathwayLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         cmbPathway.Location = new Point(vx, y);
         cmbPathway.Size = new Size(w, 25);
@@ -66,18 +69,30 @@ partial class AddCertificationForm
         y += rh;
 
         lblCertLbl.Text = "Certification:";
-        lblCertLbl.Location = new Point(lx, y + 3);
-        lblCertLbl.Size = new Size(140, 20);
+        lblCertLbl.Location = new Point(lx, y + 4);
+        lblCertLbl.Size = new Size(122, 20);
         lblCertLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         cmbCertName.Location = new Point(vx, y);
         cmbCertName.Size = new Size(w, 25);
-        cmbCertName.DropDownStyle = ComboBoxStyle.DropDown;
+        cmbCertName.DropDownStyle = ComboBoxStyle.DropDownList;
         cmbCertName.Name = "cmbCertName";
         y += rh;
 
+        lblOtherCert.Text = "Other Name:";
+        lblOtherCert.Location = new Point(lx, y + 4);
+        lblOtherCert.Size = new Size(122, 20);
+        lblOtherCert.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+        lblOtherCert.Visible = false;
+
+        txtOtherCert.Location = new Point(vx, y);
+        txtOtherCert.Size = new Size(w, 25);
+        txtOtherCert.Name = "txtOtherCert";
+        txtOtherCert.Visible = false;
+        y += rh;
+
         lblStatusLbl.Text = "Status:";
-        lblStatusLbl.Location = new Point(lx, y + 3);
-        lblStatusLbl.Size = new Size(140, 20);
+        lblStatusLbl.Location = new Point(lx, y + 4);
+        lblStatusLbl.Size = new Size(122, 20);
         lblStatusLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         cmbStatus.Location = new Point(vx, y);
         cmbStatus.Size = new Size(160, 25);
@@ -86,47 +101,48 @@ partial class AddCertificationForm
         y += rh;
 
         lblResultLbl.Text = "Result:";
-        lblResultLbl.Location = new Point(lx, y + 3);
-        lblResultLbl.Size = new Size(140, 20);
+        lblResultLbl.Location = new Point(lx, y + 4);
+        lblResultLbl.Size = new Size(122, 20);
         lblResultLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         cmbResult.Location = new Point(vx, y);
         cmbResult.Size = new Size(160, 25);
         cmbResult.DropDownStyle = ComboBoxStyle.DropDownList;
         cmbResult.Name = "cmbResult";
-        var lblResultHint = new Label();
-        lblResultHint.Text = "(only if Completed)";
-        lblResultHint.Location = new Point(vx + 168, y + 5);
-        lblResultHint.Size = new Size(160, 18);
+        y += 28;
+
+        lblResultHint.Text = "(only applies when Status is Completed)";
+        lblResultHint.Location = new Point(vx, y);
+        lblResultHint.Size = new Size(w, 16);
         lblResultHint.ForeColor = Color.Gray;
-        lblResultHint.Font = new Font("Segoe UI", 8);
-        y += rh;
+        lblResultHint.Font = new Font("Segoe UI", 7.5f);
+        y += 22;
 
         lblDateLbl.Text = "Date:";
-        lblDateLbl.Location = new Point(lx, y + 3);
-        lblDateLbl.Size = new Size(140, 20);
+        lblDateLbl.Location = new Point(lx, y + 4);
+        lblDateLbl.Size = new Size(122, 20);
         lblDateLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         chkHasDate.Text = "Set date";
-        chkHasDate.Location = new Point(vx, y + 2);
-        chkHasDate.Size = new Size(80, 22);
+        chkHasDate.Location = new Point(vx, y);
+        chkHasDate.Size = new Size(90, 26);
         chkHasDate.Name = "chkHasDate";
-        dtpDate.Location = new Point(vx + 86, y);
+        dtpDate.Location = new Point(vx + 88, y);
         dtpDate.Size = new Size(160, 25);
         dtpDate.Name = "dtpDate";
         dtpDate.Format = DateTimePickerFormat.Short;
         y += rh;
 
         lblNotesLbl.Text = "Notes:";
-        lblNotesLbl.Location = new Point(lx, y + 3);
-        lblNotesLbl.Size = new Size(140, 20);
+        lblNotesLbl.Location = new Point(lx, y + 4);
+        lblNotesLbl.Size = new Size(122, 20);
         lblNotesLbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         txtNotes.Location = new Point(vx, y);
-        txtNotes.Size = new Size(w, 60);
+        txtNotes.Size = new Size(w, 44);
         txtNotes.Multiline = true;
         txtNotes.Name = "txtNotes";
-        y += 70;
+        y += 52;
 
         btnSave.Location = new Point(vx, y);
-        btnSave.Size = new Size(130, 34);
+        btnSave.Size = new Size(130, 30);
         btnSave.Text = "Save Certification";
         btnSave.BackColor = Color.SteelBlue;
         btnSave.ForeColor = Color.White;
@@ -134,7 +150,7 @@ partial class AddCertificationForm
         btnSave.Click += btnSave_Click;
 
         btnCancel.Location = new Point(vx + 140, y);
-        btnCancel.Size = new Size(80, 34);
+        btnCancel.Size = new Size(80, 30);
         btnCancel.Text = "Cancel";
         btnCancel.Click += btnCancel_Click;
 
@@ -142,18 +158,18 @@ partial class AddCertificationForm
         {
             lblHeader,
             lblCandidateLbl, lblCandidateName,
-            lblPathwayLbl,   cmbPathway,
-            lblCertLbl,      cmbCertName,
-            lblStatusLbl,    cmbStatus,
-            lblResultLbl,    cmbResult, lblResultHint,
-            lblDateLbl,      chkHasDate, dtpDate,
-            lblNotesLbl,     txtNotes,
-            btnSave,         btnCancel
+            lblPathwayLbl, cmbPathway,
+            lblCertLbl, cmbCertName,
+            lblOtherCert, txtOtherCert,
+            lblStatusLbl, cmbStatus,
+            lblResultLbl, cmbResult, lblResultHint,
+            lblDateLbl, chkHasDate, dtpDate,
+            lblNotesLbl, txtNotes,
+            btnSave, btnCancel
         });
 
-        AutoScaleDimensions = new SizeF(96F, 96F);
-        AutoScaleMode = AutoScaleMode.Dpi;
-        ClientSize = new Size(520, y + 50);
+        AutoScaleMode = AutoScaleMode.None;
+        ClientSize = new Size(520, y + 46);
         Text = "Add Certification";
         FormBorderStyle = FormBorderStyle.FixedDialog;
         StartPosition = FormStartPosition.CenterParent;
@@ -161,14 +177,16 @@ partial class AddCertificationForm
         MinimizeBox = false;
     }
 
-    private Label    lblCandidateName;
+    private Label lblCandidateName;
     private ComboBox cmbPathway;
     private ComboBox cmbCertName;
+    private Label lblOtherCert;
+    private TextBox txtOtherCert;
     private ComboBox cmbStatus;
     private ComboBox cmbResult;
     private CheckBox chkHasDate;
     private DateTimePicker dtpDate;
-    private TextBox  txtNotes;
-    private Button   btnSave;
-    private Button   btnCancel;
+    private TextBox txtNotes;
+    private Button btnSave;
+    private Button btnCancel;
 }

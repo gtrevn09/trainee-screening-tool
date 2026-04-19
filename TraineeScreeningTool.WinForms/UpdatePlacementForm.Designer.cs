@@ -53,7 +53,7 @@ partial class UpdatePlacementForm
 
         lblPathway.Text = "";
         lblPathway.Location = new Point(col2, row);
-        lblPathway.Size = new Size(280, 20);
+        lblPathway.Size = new Size(280, 24);
         row += rowH;
 
         // Start date row
@@ -64,7 +64,7 @@ partial class UpdatePlacementForm
 
         lblStartDate.Text = "";
         lblStartDate.Location = new Point(col2, row);
-        lblStartDate.Size = new Size(280, 20);
+        lblStartDate.Size = new Size(280, 24);
         row += rowH;
 
         // Months placed row
@@ -89,7 +89,7 @@ partial class UpdatePlacementForm
 
         chkHasExitDate.Text = "Record exit date";
         chkHasExitDate.Location = new Point(col2, row - 2);
-        chkHasExitDate.Size = new Size(140, 22);
+        chkHasExitDate.Size = new Size(140, 26);
         chkHasExitDate.CheckedChanged += chkHasExitDate_CheckedChanged;
 
         dtpExitDate.Location = new Point(col2 + 150, row - 2);
@@ -107,7 +107,7 @@ partial class UpdatePlacementForm
 
         chkIsSuccessful.Text = "Mark as Successful (stayed 6+ months)";
         chkIsSuccessful.Location = new Point(col2, row - 2);
-        chkIsSuccessful.Size = new Size(290, 22);
+        chkIsSuccessful.Size = new Size(290, 26);
         row += rowH;
 
         // Suggestion label

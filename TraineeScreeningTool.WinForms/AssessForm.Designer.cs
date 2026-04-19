@@ -50,9 +50,9 @@ partial class AssessForm
         txtTalentSignal = new TextBox();
         btnSubmit = new Button();
 
-        int lx = 12;
-        int tx = 220;
-        int tw = 120;
+        int lx = 30;
+        int tx = 320;
+        int tw = 180;
         int rh = 35;
         int y = 15;
 
@@ -61,7 +61,7 @@ partial class AssessForm
             var lbl = new Label();
             lbl.Text = text;
             lbl.Location = new Point(lx, yPos);
-            lbl.Size = new Size(360, 22);
+            lbl.Size = new Size(520, 22);
             lbl.Font = new Font("Segoe UI", 9, FontStyle.Bold | FontStyle.Underline);
             lbl.ForeColor = Color.SteelBlue;
             Controls.Add(lbl);
@@ -73,7 +73,7 @@ partial class AssessForm
             var lbl = new Label();
             lbl.Text = labelText;
             lbl.Location = new Point(lx, yPos + 3);
-            lbl.Size = new Size(200, 22);
+            lbl.Size = new Size(270, 22);
             Controls.Add(lbl);
 
             txt.Location = new Point(tx, yPos);
@@ -172,7 +172,8 @@ partial class AssessForm
 
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
-        ClientSize = new Size(380, 600);
+        ClientSize = new Size(820, 700);
+        MinimumSize = new Size(820, 650);
         Text = "Assess Candidate";
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.Sizable;
