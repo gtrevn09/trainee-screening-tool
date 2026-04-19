@@ -12,8 +12,8 @@ public partial class AddCertificationForm : Form
     public AddCertificationForm(string username, int candidateId, string candidateName)
     {
         InitializeComponent();
-        _username      = username;
-        _candidateId   = candidateId;
+        _username = username;
+        _candidateId = candidateId;
         _candidateName = candidateName;
     }
 
@@ -33,12 +33,15 @@ public partial class AddCertificationForm : Form
         cmbResult.SelectedIndex = 0;
         cmbResult.Enabled = false;
 
-        dtpDate.Value   = DateTime.Today;
+        dtpDate.Value = DateTime.Today;
         dtpDate.Enabled = false;
         chkHasDate.Checked = false;
 
         cmbStatus.SelectedIndexChanged += cmbStatus_SelectedIndexChanged;
-        chkHasDate.CheckedChanged      += chkHasDate_CheckedChanged;
+        chkHasDate.CheckedChanged += chkHasDate_CheckedChanged;
+        cmbCertName.SelectedIndexChanged += cmbCertName_SelectedIndexChanged;
+
+        ToggleOtherCertificationTextbox();
     }
 
     private void cmbPathway_SelectedIndexChanged(object sender, EventArgs e)
@@ -52,11 +55,32 @@ public partial class AddCertificationForm : Form
         var certs = CareerPathways.GetCertificationsFor(pathway);
 
         cmbCertName.Items.Clear();
+
         foreach (var cert in certs)
             cmbCertName.Items.Add(cert);
 
+        cmbCertName.Items.Add("Other");
+
         if (cmbCertName.Items.Count > 0)
             cmbCertName.SelectedIndex = 0;
+
+        ToggleOtherCertificationTextbox();
+    }
+
+    private void cmbCertName_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ToggleOtherCertificationTextbox();
+    }
+
+    private void ToggleOtherCertificationTextbox()
+    {
+        bool isOther = cmbCertName.SelectedItem?.ToString() == "Other";
+
+        lblOtherCert.Visible = isOther;
+        txtOtherCert.Visible = isOther;
+
+        if (!isOther)
+            txtOtherCert.Text = "";
     }
 
     private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,7 +98,13 @@ public partial class AddCertificationForm : Form
 
     private void btnSave_Click(object sender, EventArgs e)
     {
-        string certName = cmbCertName.Text.Trim();
+        string certName;
+
+        if (cmbCertName.SelectedItem?.ToString() == "Other")
+            certName = txtOtherCert.Text.Trim();
+        else
+            certName = cmbCertName.Text.Trim();
+
         if (string.IsNullOrEmpty(certName))
         {
             MessageBox.Show("Please enter or select a certification name.", "Validation Error",
@@ -82,7 +112,7 @@ public partial class AddCertificationForm : Form
             return;
         }
 
-        string status  = cmbStatus.SelectedItem?.ToString() ?? "Pursuing";
+        string status = cmbStatus.SelectedItem?.ToString() ?? "Pursuing";
         string? result = null;
         if (status == "Completed" &&
             cmbResult.SelectedItem?.ToString() is string r &&
@@ -96,17 +126,17 @@ public partial class AddCertificationForm : Form
         var cert = new Certification
         {
             CandidateId = _candidateId,
-            CertName    = certName,
-            Status      = status,
-            Result      = result,
-            Date        = date,
-            Notes       = txtNotes.Text.Trim()
+            CertName = certName,
+            Status = status,
+            Result = result,
+            Date = date,
+            Notes = txtNotes.Text.Trim()
         };
 
         context.Certifications.Add(cert);
         context.SaveChanges();
 
-        string dateStr   = date?.ToString("yyyy-MM-dd") ?? "no date";
+        string dateStr = date?.ToString("yyyy-MM-dd") ?? "no date";
         string resultStr = result ?? "in progress";
         context.Log(_username, "Add Certification",
             $"Added certification '{certName}' for candidate ID {_candidateId} " +

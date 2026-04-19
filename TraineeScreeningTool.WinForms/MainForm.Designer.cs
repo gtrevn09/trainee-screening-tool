@@ -22,10 +22,10 @@ partial class MainForm
         btnAddCandidate = new Button();
         btnImport = new Button();
         btnImportPdf = new Button();
+        btnViewPdf = new Button();
         btnAssess = new Button();
-        btnDetails = new Button();
+        btnProfile = new Button();
         btnDelete = new Button();
-        btnPlacements = new Button();
         btnUserDetails = new Button();
         btnLogout = new Button();
         btnViewLogs = new Button();
@@ -39,7 +39,7 @@ partial class MainForm
         txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         txtSearch.TextChanged += txtSearch_TextChanged;
 
-        // Notification banner (hidden by default, shown when placements need review)
+        // Notification banner
         pnlNotification.Location = new Point(12, 44);
         pnlNotification.Size = new Size(760, 28);
         pnlNotification.BackColor = Color.FromArgb(255, 220, 100);
@@ -58,7 +58,7 @@ partial class MainForm
 
         pnlNotification.Controls.Add(lblNotification);
 
-        // DataGridView below notification
+        // DataGridView
         dataGridView1.Location = new Point(12, 78);
         dataGridView1.Size = new Size(760, 284);
         dataGridView1.Name = "dataGridView1";
@@ -67,80 +67,79 @@ partial class MainForm
         dataGridView1.MultiSelect = true;
         dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 
-        // Row 1 buttons - candidate actions
+        // Row 1 buttons
         btnAddCandidate.Location = new Point(12, 375);
-        btnAddCandidate.Size = new Size(120, 35);
-        btnAddCandidate.Text = "Add Candidate";
+        btnAddCandidate.Size = new Size(90, 35);
+        btnAddCandidate.Text = "Add";
         btnAddCandidate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnAddCandidate.Click += btnAddCandidate_Click;
 
-        btnImport.Location = new Point(142, 375);
+        btnImport.Location = new Point(108, 375);
         btnImport.Size = new Size(120, 35);
         btnImport.Text = "Import CSV";
         btnImport.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnImport.Click += btnImport_Click;
 
-        btnImportPdf.Location = new Point(272, 375);
-        btnImportPdf.Size = new Size(120, 35);
-        btnImportPdf.Text = "Import PDFs";
+        btnImportPdf.Location = new Point(234, 375);
+        btnImportPdf.Size = new Size(125, 35);
+        btnImportPdf.Text = "Import PDF's";
         btnImportPdf.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnImportPdf.Click += btnImportPdf_Click;
 
-        btnAssess.Location = new Point(402, 375);
-        btnAssess.Size = new Size(100, 35);
+        btnViewPdf.Location = new Point(365, 375);
+        btnViewPdf.Size = new Size(110, 35);
+        btnViewPdf.Text = "View PDF's";
+        btnViewPdf.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        btnViewPdf.Click += btnViewPdf_Click;
+
+        btnAssess.Location = new Point(481, 375);
+        btnAssess.Size = new Size(90, 35);
         btnAssess.Text = "Assess";
         btnAssess.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnAssess.Click += btnAssess_Click;
 
-        btnDetails.Location = new Point(512, 375);
-        btnDetails.Size = new Size(100, 35);
-        btnDetails.Text = "Details";
-        btnDetails.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        btnDetails.Click += btnDetails_Click;
-
-        btnDelete.Location = new Point(622, 375);
-        btnDelete.Size = new Size(100, 35);
+        btnDelete.Location = new Point(577, 375);
+        btnDelete.Size = new Size(90, 35);
         btnDelete.Text = "Delete";
         btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnDelete.Click += btnDelete_Click;
 
-        // Row 2 buttons - account and placement actions
-        btnPlacements.Location = new Point(12, 420);
-        btnPlacements.Size = new Size(130, 35);
-        btnPlacements.Text = "Job Placements";
-        btnPlacements.BackColor = Color.SteelBlue;
-        btnPlacements.ForeColor = Color.White;
-        btnPlacements.FlatStyle = FlatStyle.Flat;
-        btnPlacements.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        btnPlacements.Click += btnPlacements_Click;
+        btnProfile.Location = new Point(492, 420);
+        btnProfile.Size = new Size(160, 35);
+        btnProfile.Text = "Candidate Profile";
+        btnProfile.BackColor = Color.FromArgb(60, 120, 60);
+        btnProfile.ForeColor = Color.White;
+        btnProfile.FlatStyle = FlatStyle.Flat;
+        btnProfile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        btnProfile.Click += btnProfile_Click;
 
-        btnUserDetails.Location = new Point(152, 420);
-        btnUserDetails.Size = new Size(130, 35);
+        // Row 2 buttons
+        btnUserDetails.Location = new Point(12, 420);
+        btnUserDetails.Size = new Size(120, 35);
         btnUserDetails.Text = "User Details";
         btnUserDetails.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnUserDetails.Click += btnUserDetails_Click;
 
-        btnLogout.Location = new Point(292, 420);
-        btnLogout.Size = new Size(130, 35);
+        btnLogout.Location = new Point(138, 420);
+        btnLogout.Size = new Size(100, 35);
         btnLogout.Text = "Logout";
         btnLogout.BackColor = Color.IndianRed;
         btnLogout.ForeColor = Color.White;
         btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnLogout.Click += btnLogout_Click;
 
-        btnViewLogs.Location = new Point(432, 420);
-        btnViewLogs.Size = new Size(130, 35);
+        btnViewLogs.Location = new Point(244, 420);
+        btnViewLogs.Size = new Size(100, 35);
         btnViewLogs.Text = "View Logs";
         btnViewLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnViewLogs.Click += btnViewLogs_Click;
 
-        btnAnalytics.Location = new Point(572, 420);
-        btnAnalytics.Size = new Size(130, 35);
+        btnAnalytics.Location = new Point(350, 420);
+        btnAnalytics.Size = new Size(100, 35);
         btnAnalytics.Text = "Analytics";
         btnAnalytics.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnAnalytics.Click += btnAnalytics_Click;
 
-        // Add all controls to the form
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(784, 470);
@@ -150,19 +149,18 @@ partial class MainForm
         Controls.Add(btnAddCandidate);
         Controls.Add(btnImport);
         Controls.Add(btnImportPdf);
+        Controls.Add(btnViewPdf);
         Controls.Add(btnAssess);
-        Controls.Add(btnDetails);
         Controls.Add(btnDelete);
-        Controls.Add(btnPlacements);
         Controls.Add(btnUserDetails);
         Controls.Add(btnLogout);
         Controls.Add(btnViewLogs);
         Controls.Add(btnAnalytics);
+        Controls.Add(btnProfile);
         Text = "LIFE Works Trainee Screening Tool";
-        MinimumSize = new Size(800, 510);
+        MinimumSize = new Size(920, 510);
     }
 
-    // Declare all controls
     private TextBox txtSearch;
     private Panel pnlNotification;
     private Label lblNotification;
@@ -170,10 +168,10 @@ partial class MainForm
     private Button btnAddCandidate;
     private Button btnImport;
     private Button btnImportPdf;
+    private Button btnViewPdf;
     private Button btnAssess;
-    private Button btnDetails;
+    private Button btnProfile;
     private Button btnDelete;
-    private Button btnPlacements;
     private Button btnUserDetails;
     private Button btnLogout;
     private Button btnViewLogs;
