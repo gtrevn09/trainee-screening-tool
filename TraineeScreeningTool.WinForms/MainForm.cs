@@ -254,6 +254,7 @@ public partial class MainForm : Form
         btnViewLogs.Location = new Point(margin + 232, btnRow2Y);
         btnAnalytics.Location = new Point(margin + 338, btnRow2Y);
         btnProfile.Location = new Point(margin + 445, btnRow2Y);
+        btnUserGuide.Location = new Point(margin + 621, btnRow2Y);
     }
 
     private void btnAddCandidate_Click(object sender, EventArgs e)
@@ -434,6 +435,12 @@ public partial class MainForm : Form
     private void btnAnalytics_Click(object sender, EventArgs e)
     {
         var form = new AnalyticsForm(_username);
+        form.ShowDialog();
+    }
+
+    private void btnUserGuide_Click(object sender, EventArgs e)
+    {
+        var form = new UserGuideForm();
         form.ShowDialog();
     }
 

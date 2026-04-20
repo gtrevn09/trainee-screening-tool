@@ -30,6 +30,7 @@ partial class MainForm
         btnLogout = new Button();
         btnViewLogs = new Button();
         btnAnalytics = new Button();
+        btnUserGuide = new Button();
 
         // Search box at the top
         txtSearch.Location = new Point(12, 12);
@@ -140,6 +141,15 @@ partial class MainForm
         btnAnalytics.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         btnAnalytics.Click += btnAnalytics_Click;
 
+        btnUserGuide.Location = new Point(658, 420);
+        btnUserGuide.Size = new Size(110, 35);
+        btnUserGuide.Text = "User Guide";
+        btnUserGuide.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        btnUserGuide.BackColor = Color.FromArgb(70, 130, 180);
+        btnUserGuide.ForeColor = Color.White;
+        btnUserGuide.FlatStyle = FlatStyle.Flat;
+        btnUserGuide.Click += btnUserGuide_Click;
+
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(784, 470);
@@ -156,6 +166,7 @@ partial class MainForm
         Controls.Add(btnLogout);
         Controls.Add(btnViewLogs);
         Controls.Add(btnAnalytics);
+        Controls.Add(btnUserGuide);
         Controls.Add(btnProfile);
         Text = "LIFE Works Trainee Screening Tool";
         MinimumSize = new Size(920, 510);
@@ -176,4 +187,5 @@ partial class MainForm
     private Button btnLogout;
     private Button btnViewLogs;
     private Button btnAnalytics;
+    private Button btnUserGuide;
 }
