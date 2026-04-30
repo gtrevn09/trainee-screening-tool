@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build:*)",
+      "Bash(git fetch:*)",
+      "Bash(git rebase:*)",
+      "Bash(grep -n \"AutoScaleDimensions\\\\|AutoScaleMode\" ./TraineeScreeningTool.WinForms/*.Designer.cs)",
+      "Bash(grep:*)",
+      "Bash(ls -la ./TraineeScreeningTool.WinForms/*.cs)"
+    ]
+  }
+}

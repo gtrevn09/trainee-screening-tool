@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Text;
 using TraineeScreeningTool.WinForms.Data;
 using TraineeScreeningTool.WinForms.Models;
@@ -9,15 +10,18 @@ public partial class AnalyticsForm : Form
 {
     private readonly string _username;
 
-    // Pass threshold applied to the composite percentile score.
-    // All aptitude scores in this system are expressed as percentiles (0–100), so the
-    // 50th percentile represents average performance — a reasonable default pass bar.
+    // All aptitude scores are expressed as percentiles (0–100); 50th = average.
     private const int PassThreshold = 50;
 
-    // Cached rows kept so the CSV export always matches what is displayed
+    // Cached rows so CSV export always matches what is displayed
     private List<PathwayRow> _pathwayRows = new();
     private List<CertRow> _certRows = new();
-    private List<PassFailRow> _passFailRows = new();
+    private List<PlacementRow> _placementRows = new();
+
+    // Current sort state per grid (property name, ascending)
+    private (string Col, bool Asc) _pathwaySort = (string.Empty, true);
+    private (string Col, bool Asc) _certSort = (string.Empty, true);
+    private (string Col, bool Asc) _placementSort = (string.Empty, true);
 
     public AnalyticsForm(string username)
     {
@@ -28,7 +32,9 @@ public partial class AnalyticsForm : Form
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
-        LoadAnalytics();
+        Cursor = Cursors.WaitCursor;
+        try { LoadAnalytics(); }
+        finally { Cursor = Cursors.Default; }
     }
 
     // ── Entry point ────────────────────────────────────────────────────────────
@@ -44,7 +50,7 @@ public partial class AnalyticsForm : Form
         LoadSummaryStats(candidates, placements, certifications);
         LoadByPathway(placements, candidates);
         LoadByCertification(certifications);
-        LoadPassFail(candidates);
+        LoadPlacementSuccess(placements, candidates);
     }
 
     // ── Summary stats bar ──────────────────────────────────────────────────────
@@ -97,6 +103,11 @@ public partial class AnalyticsForm : Form
             };
         }).ToList();
 
+        BindPathway();
+    }
+
+    private void BindPathway()
+    {
         dgvByPathway.DataSource = null;
         dgvByPathway.DataSource = _pathwayRows;
 
@@ -109,6 +120,19 @@ public partial class AnalyticsForm : Form
         SetColHeader(dgvByPathway, "ScorePassRate", "Score Pass Rate");
 
         dgvByPathway.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        ApplyEmptyState(dgvByPathway, lblEmptyPathway);
+
+        if (!string.IsNullOrEmpty(_pathwaySort.Col))
+            SetSortGlyph(dgvByPathway, _pathwaySort.Col, _pathwaySort.Asc);
+    }
+
+    private void dgvByPathway_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+    {
+        var colName = dgvByPathway.Columns[e.ColumnIndex].Name;
+        bool asc = _pathwaySort.Col == colName ? !_pathwaySort.Asc : true;
+        _pathwaySort = (colName, asc);
+        _pathwayRows = ApplySort(_pathwayRows, colName, asc);
+        BindPathway();
     }
 
     // ── Tab 2 — Certification Outcomes ────────────────────────────────────────
@@ -137,6 +161,11 @@ public partial class AnalyticsForm : Form
                 };
             }).ToList();
 
+        BindCertification();
+    }
+
+    private void BindCertification()
+    {
         dgvByCertification.DataSource = null;
         dgvByCertification.DataSource = _certRows;
 
@@ -159,29 +188,53 @@ public partial class AnalyticsForm : Form
                     row.DefaultCellStyle.BackColor = Color.FromArgb(255, 220, 220);
             }
         }
+
+        ApplyEmptyState(dgvByCertification, lblEmptyCert);
+
+        if (!string.IsNullOrEmpty(_certSort.Col))
+            SetSortGlyph(dgvByCertification, _certSort.Col, _certSort.Asc);
     }
 
-    // ── Tab 3 — Pass vs. Fail Analysis ────────────────────────────────────────
-
-    private void LoadPassFail(List<Candidate> candidates)
+    private void dgvByCertification_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
     {
-        // Only include candidates that have at least one percentile score recorded
-        var scored = candidates
-            .Select(c => (Candidate: c, Composite: ComputeCompositeScore(c)))
-            .Where(x => x.Composite.HasValue)
-            .ToList();
+        var colName = dgvByCertification.Columns[e.ColumnIndex].Name;
+        bool asc = _certSort.Col == colName ? !_certSort.Asc : true;
+        _certSort = (colName, asc);
+        _certRows = ApplySort(_certRows, colName, asc);
+        BindCertification();
+    }
 
-        var passCandidates = scored.Where(x => x.Composite!.Value >= PassThreshold).Select(x => x.Candidate).ToList();
-        var failCandidates = scored.Where(x => x.Composite!.Value < PassThreshold).Select(x => x.Candidate).ToList();
+    // ── Tab 3 — Placement Success by Score ────────────────────────────────────
 
-        _passFailRows = new List<PassFailRow>
+    private void LoadPlacementSuccess(List<JobPlacement> placements, List<Candidate> allCandidates)
+    {
+        var successIds = placements
+            .Where(p => p.IsSuccessful)
+            .Select(p => p.CandidateId)
+            .Distinct()
+            .ToHashSet();
+
+        var allPlacedIds = placements
+            .Select(p => p.CandidateId)
+            .Distinct()
+            .ToHashSet();
+
+        var successCandidates = allCandidates.Where(c => successIds.Contains(c.Id)).ToList();
+        var unsuccessCandidates = allCandidates.Where(c => allPlacedIds.Contains(c.Id) && !successIds.Contains(c.Id)).ToList();
+
+        _placementRows = new List<PlacementRow>
         {
-            BuildPassFailRow($"Pass (composite ≥ {PassThreshold})", passCandidates),
-            BuildPassFailRow($"Fail (composite < {PassThreshold})", failCandidates)
+            BuildPlacementRow("Successful (6+ months)", successCandidates),
+            BuildPlacementRow("Unsuccessful", unsuccessCandidates)
         };
 
+        BindPlacementSuccess();
+    }
+
+    private void BindPlacementSuccess()
+    {
         dgvPassFail.DataSource = null;
-        dgvPassFail.DataSource = _passFailRows;
+        dgvPassFail.DataSource = _placementRows;
 
         SetColHeader(dgvPassFail, "Group", "Group");
         SetColHeader(dgvPassFail, "Count", "# Candidates");
@@ -196,16 +249,30 @@ public partial class AnalyticsForm : Form
 
         foreach (DataGridViewRow row in dgvPassFail.Rows)
         {
-            if (row.DataBoundItem is PassFailRow pfr)
+            if (row.DataBoundItem is PlacementRow pr)
             {
-                row.DefaultCellStyle.BackColor = pfr.Group.StartsWith("Pass")
+                row.DefaultCellStyle.BackColor = pr.Group.StartsWith("Successful")
                     ? Color.FromArgb(220, 255, 220)
                     : Color.FromArgb(255, 220, 220);
             }
         }
+
+        ApplyEmptyState(dgvPassFail, lblEmptyPassFail);
+
+        if (!string.IsNullOrEmpty(_placementSort.Col))
+            SetSortGlyph(dgvPassFail, _placementSort.Col, _placementSort.Asc);
     }
 
-    private PassFailRow BuildPassFailRow(string group, List<Candidate> candidates)
+    private void dgvPassFail_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+    {
+        var colName = dgvPassFail.Columns[e.ColumnIndex].Name;
+        bool asc = _placementSort.Col == colName ? !_placementSort.Asc : true;
+        _placementSort = (colName, asc);
+        _placementRows = ApplySort(_placementRows, colName, asc);
+        BindPlacementSuccess();
+    }
+
+    private PlacementRow BuildPlacementRow(string group, List<Candidate> candidates)
     {
         var composites = candidates
             .Select(ComputeCompositeScore)
@@ -213,7 +280,7 @@ public partial class AnalyticsForm : Form
             .Select(s => s!.Value)
             .ToList();
 
-        return new PassFailRow
+        return new PlacementRow
         {
             Group = group,
             Count = candidates.Count,
@@ -244,8 +311,8 @@ public partial class AnalyticsForm : Form
                 csvContent = BuildCsvCertification();
                 break;
             default:
-                tabName = "PassVsFail";
-                csvContent = BuildCsvPassFail();
+                tabName = "PlacementSuccess";
+                csvContent = BuildCsvPlacementSuccess();
                 break;
         }
 
@@ -290,12 +357,12 @@ public partial class AnalyticsForm : Form
         return sb.ToString();
     }
 
-    private string BuildCsvPassFail()
+    private string BuildCsvPlacementSuccess()
     {
         var sb = new StringBuilder();
         sb.AppendLine("Group,# Candidates,Avg Composite,Avg CCAT %ile,Avg CBST %ile," +
                       "Avg CMRA %ile,Avg Typing %ile,Avg CAST %ile");
-        foreach (var r in _passFailRows)
+        foreach (var r in _placementRows)
             sb.AppendLine($"{CsvEscape(r.Group)},{r.Count},{r.AvgComposite},{r.AvgCCAT}," +
                           $"{r.AvgCBST},{r.AvgCMRA},{r.AvgTyping},{r.AvgCAST}");
         return sb.ToString();
@@ -333,6 +400,58 @@ public partial class AnalyticsForm : Form
             dgv.Columns[colName]!.HeaderText = header;
     }
 
+    private static void ApplyEmptyState(DataGridView dgv, Label emptyLabel)
+    {
+        bool hasRows = dgv.Rows.Count > 0;
+        dgv.Visible = hasRows;
+        emptyLabel.Visible = !hasRows;
+    }
+
+    // Sorts a list by a public property name, handling numeric strings ("45.3", "80%") and "—" correctly.
+    private static List<T> ApplySort<T>(List<T> list, string property, bool ascending)
+    {
+        var prop = typeof(T).GetProperty(property);
+        if (prop is null) return list;
+
+        var sorted = list.ToList();
+        sorted.Sort((a, b) =>
+        {
+            int cmp = CompareValues(prop.GetValue(a), prop.GetValue(b));
+            return ascending ? cmp : -cmp;
+        });
+        return sorted;
+    }
+
+    private static int CompareValues(object? a, object? b)
+    {
+        if (a is int ia && b is int ib) return ia.CompareTo(ib);
+        if (a is string sa && b is string sb)
+        {
+            double da = ParseSortNumber(sa);
+            double db = ParseSortNumber(sb);
+            if (!double.IsNaN(da) && !double.IsNaN(db)) return da.CompareTo(db);
+            return string.Compare(sa, sb, StringComparison.OrdinalIgnoreCase);
+        }
+        return 0;
+    }
+
+    // Returns the numeric value of display strings like "45.3" or "80%"; "—" sorts last.
+    private static double ParseSortNumber(string s)
+    {
+        if (s == "—") return double.MaxValue;
+        var clean = s.TrimEnd('%').Trim();
+        return double.TryParse(clean, NumberStyles.Any, CultureInfo.InvariantCulture, out double d) ? d : double.NaN;
+    }
+
+    private static void SetSortGlyph(DataGridView dgv, string colName, bool ascending)
+    {
+        foreach (DataGridViewColumn col in dgv.Columns)
+            col.HeaderCell.SortGlyphDirection = SortOrder.None;
+        if (dgv.Columns.Contains(colName))
+            dgv.Columns[colName]!.HeaderCell.SortGlyphDirection =
+                ascending ? SortOrder.Ascending : SortOrder.Descending;
+    }
+
     private static string CsvEscape(string value)
     {
         if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
@@ -363,7 +482,7 @@ public partial class AnalyticsForm : Form
         public string PassRate { get; set; } = string.Empty;
     }
 
-    private class PassFailRow
+    private class PlacementRow
     {
         public string Group { get; set; } = string.Empty;
         public int Count { get; set; }
