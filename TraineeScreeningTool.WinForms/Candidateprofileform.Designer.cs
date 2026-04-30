@@ -105,7 +105,7 @@ partial class CandidateProfileForm
         lblTalentSignal.Font = new Font("Segoe UI", 9, FontStyle.Bold);
         lblTalentSignal.ForeColor = Color.White;
         lblTalentSignal.AutoSize = true;
-        lblTalentSignal.Location = new Point(115, 96);
+        lblTalentSignal.Location = new Point(130, 96);
 
         // Recommendation badge (right side of header)
         var pnlBadge = new Panel
@@ -129,7 +129,7 @@ partial class CandidateProfileForm
         lblReadiness.Font = new Font("Segoe UI", 9);
         lblReadiness.ForeColor = Color.White;
         lblReadiness.AutoSize = true;
-        lblReadiness.Location = new Point(75, 54);
+        lblReadiness.Location = new Point(92, 54);
 
         lblExplanation.Text = "";
         lblExplanation.Font = new Font("Segoe UI", 7.5f);
