@@ -100,7 +100,7 @@ partial class AnalyticsForm
         dgvByPathway.MultiSelect = false;
         dgvByPathway.AllowUserToAddRows = false;
         dgvByPathway.AllowUserToDeleteRows = false;
-        dgvByPathway.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        dgvByPathway.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvByPathway.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dgvByPathway.ColumnHeaderMouseClick += dgvByPathway_ColumnHeaderMouseClick;
 
@@ -138,7 +138,7 @@ partial class AnalyticsForm
         dgvByCertification.MultiSelect = false;
         dgvByCertification.AllowUserToAddRows = false;
         dgvByCertification.AllowUserToDeleteRows = false;
-        dgvByCertification.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        dgvByCertification.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvByCertification.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dgvByCertification.ColumnHeaderMouseClick += dgvByCertification_ColumnHeaderMouseClick;
 
@@ -176,7 +176,7 @@ partial class AnalyticsForm
         dgvPassFail.MultiSelect = false;
         dgvPassFail.AllowUserToAddRows = false;
         dgvPassFail.AllowUserToDeleteRows = false;
-        dgvPassFail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        dgvPassFail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvPassFail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         dgvPassFail.ColumnHeaderMouseClick += dgvPassFail_ColumnHeaderMouseClick;
 
@@ -232,8 +232,9 @@ partial class AnalyticsForm
         Controls.Add(tabMain);
         Controls.Add(pnlButtons);
         Text = "Analytics";
-        StartPosition = FormStartPosition.CenterParent;
-        MinimumSize = new Size(900, 600);
+        StartPosition = FormStartPosition.CenterScreen;
+        WindowState = FormWindowState.Maximized;
+        MinimumSize = new Size(800, 550);
     }
 
     // Control declarations
