@@ -10,6 +10,7 @@ public partial class MainForm : Form
     private readonly string _username;
     private bool _isDragging = false;
     private bool _dragCheckValue = true;
+    private bool _allSelected = false;
 
     public MainForm(string username)
     {
@@ -24,6 +25,7 @@ public partial class MainForm : Form
 
         dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
         dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;
+        dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
     }
 
     private void LoadPlacementNotification()
@@ -54,6 +56,7 @@ public partial class MainForm : Form
 
     private void LoadCandidates()
     {
+        _allSelected = false;
         using var context = new ApplicationDbContext();
         dataGridView1.DataSource = context.Candidates.ToList();
         dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -62,7 +65,7 @@ public partial class MainForm : Form
         {
             var checkboxCol = new DataGridViewCheckBoxColumn();
             checkboxCol.Name = "Select";
-            checkboxCol.HeaderText = "Select";
+            checkboxCol.HeaderText = "☐ All";
             checkboxCol.Width = 50;
             checkboxCol.DisplayIndex = 0;
             dataGridView1.Columns.Insert(0, checkboxCol);
@@ -220,6 +223,18 @@ public partial class MainForm : Form
     private void dataGridView1_MouseUp(object sender, MouseEventArgs e)
     {
         _isDragging = false;
+    }
+
+    private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+    {
+        if (dataGridView1.Columns[e.ColumnIndex].Name != "Select") return;
+
+        _allSelected = !_allSelected;
+
+        foreach (DataGridViewRow row in dataGridView1.Rows)
+            row.Cells["Select"].Value = _allSelected;
+
+        dataGridView1.RefreshEdit();
     }
 
     protected override void OnResize(EventArgs e)

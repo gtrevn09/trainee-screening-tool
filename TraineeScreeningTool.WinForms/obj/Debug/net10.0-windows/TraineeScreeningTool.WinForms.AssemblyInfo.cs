@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TraineeScreeningTool.WinForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6408b1fef988d930dc12bdaaa969c00e458e7fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4551755a2c1cd018f479d21a93c2a5faf28ed87")]
 [assembly: System.Reflection.AssemblyProductAttribute("TraineeScreeningTool.WinForms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TraineeScreeningTool.WinForms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

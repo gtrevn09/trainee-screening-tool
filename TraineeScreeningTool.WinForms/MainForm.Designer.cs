@@ -42,7 +42,7 @@ partial class MainForm
 
         // Notification banner
         pnlNotification.Location = new Point(12, 44);
-        pnlNotification.Size = new Size(760, 28);
+        pnlNotification.Size = new Size(760, 50);
         pnlNotification.BackColor = Color.FromArgb(255, 220, 100);
         pnlNotification.Cursor = Cursors.Hand;
         pnlNotification.Visible = false;
@@ -50,8 +50,9 @@ partial class MainForm
         pnlNotification.Click += pnlNotification_Click;
 
         lblNotification.Text = "";
-        lblNotification.Location = new Point(6, 5);
-        lblNotification.Size = new Size(748, 18);
+        lblNotification.Location = new Point(6, 2);
+        lblNotification.Size = new Size(748, 30);
+        lblNotification.TextAlign = ContentAlignment.MiddleLeft;
         lblNotification.Font = new Font(lblNotification.Font, FontStyle.Bold);
         lblNotification.Cursor = Cursors.Hand;
         lblNotification.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -60,7 +61,7 @@ partial class MainForm
         pnlNotification.Controls.Add(lblNotification);
 
         // DataGridView
-        dataGridView1.Location = new Point(12, 78);
+        dataGridView1.Location = new Point(12, 102);
         dataGridView1.Size = new Size(760, 284);
         dataGridView1.Name = "dataGridView1";
         dataGridView1.ReadOnly = false;
