@@ -264,12 +264,13 @@ public partial class MainForm : Form
         btnAssess.Location = new Point(margin + 469, btnRow1Y);
         btnDelete.Location = new Point(margin + 565, btnRow1Y);
 
-        btnUserDetails.Location = new Point(margin, btnRow2Y);
-        btnLogout.Location = new Point(margin + 126, btnRow2Y);
-        btnViewLogs.Location = new Point(margin + 232, btnRow2Y);
-        btnAnalytics.Location = new Point(margin + 338, btnRow2Y);
-        btnProfile.Location = new Point(margin + 445, btnRow2Y);
-        btnUserGuide.Location = new Point(margin + 621, btnRow2Y);
+        int r2x = margin;
+        btnUserDetails.Location = new Point(r2x, btnRow2Y); r2x += btnUserDetails.Width + 6;
+        btnLogout.Location = new Point(r2x, btnRow2Y); r2x += btnLogout.Width + 6;
+        btnViewLogs.Location = new Point(r2x, btnRow2Y); r2x += btnViewLogs.Width + 6;
+        btnAnalytics.Location = new Point(r2x, btnRow2Y); r2x += btnAnalytics.Width + 6;
+        btnProfile.Location = new Point(r2x, btnRow2Y); r2x += btnProfile.Width + 16;
+        btnUserGuide.Location = new Point(r2x, btnRow2Y);
     }
 
     private void btnAddCandidate_Click(object sender, EventArgs e)

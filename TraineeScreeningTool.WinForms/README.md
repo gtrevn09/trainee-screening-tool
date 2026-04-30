@@ -1,4 +1,4 @@
-# LIFE Works Trainee Screening Tool
+1# LIFE Works Trainee Screening Tool
 
 ## Project Overview
 A desktop application built with C# WinForms and SQLite that allows LIFE Works staff to import, manage, and analyze trainee assessment data — tracking certifications, job placements, and building data-driven career pathway recommendations over time.
