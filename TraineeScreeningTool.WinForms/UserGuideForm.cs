@@ -179,6 +179,10 @@ Displays all assessment scores organized by test section:
 The header at the top always shows the candidate's name, email, test date,
 Talent Signal score, and any Pathway Recommendation that has been set.
 
+Scores are displayed as percentiles (0–100) where the 50th percentile
+is average. A Composite Score of 50 or above meets the pass threshold
+used in the Analytics dashboard.
+
 Scroll down to see all scores — the panel is scrollable.
 
 ──────────────────────────────────────────────
@@ -338,34 +342,71 @@ Shows three quick stats at a glance:
   • Successful Placements (marked as successful at 6+ months)
   • Certifications Earned (exams passed)
 
+COMPOSITE SCORE — HOW IT IS CALCULATED
+────────────────────────────────────────
+The Composite Score is the average of up to five overall-percentile scores:
+  CCAT, CBST, CMRA, Typing, and CAST.
+Only scores that have been recorded for a candidate are included in the
+average. If none of the five are recorded, no composite is shown ("—").
+
+PASS THRESHOLD
+───────────────
+A candidate's Composite Score is considered a PASS when it is at or above
+the 50th percentile (≥ 50). This threshold is used in Tab 1 to calculate
+the Score Pass Rate for each pathway.
+
 TAB 1 — SCORES BY CAREER PATHWAY
 ──────────────────────────────────
 Shows average scores for candidates grouped by the career pathway they
 were placed into. Columns include:
-  • # of Candidates in that pathway
-  • Average CCAT percentile
-  • Average CBST percentile
-  • Average Composite score
-  • Number of Successful Placements
-  • Score Pass Rate
+  • # Candidates — total unique candidates placed in that pathway
+  • Avg CCAT %ile — average CCAT overall percentile
+  • Avg CBST %ile — average CBST overall percentile
+  • Avg Composite (pass ≥ 50) — average composite score; pass = 50th %ile or above
+  • Successful Placements — placements marked successful (6+ months)
+  • Score Pass Rate — percentage of candidates whose composite score meets
+                      the ≥ 50 pass threshold
 
-Use this to see which pathways your candidates tend to score higher in.
+Use this to see which pathways your candidates tend to score higher in,
+and to compare score performance across placement pathways.
 
 TAB 2 — CERTIFICATION OUTCOMES
 ────────────────────────────────
 Shows a breakdown for every certification that has been tracked:
-  • How many candidates are Pursuing it
-  • How many Passed
-  • How many Failed
-  • Overall Exam Pass Rate
+  • Total — all records for that certification
+  • Pursuing — candidates currently working toward it
+  • Passed — candidates who passed the exam
+  • Failed — candidates who failed the exam
+  • Exam Pass Rate — percentage of completed attempts that were passed
 
-  GREEN rows = more passes than fails
+  GREEN rows = at least one pass, and passes are equal to or greater than fails
   RED rows   = more fails than passes
+  No color   = no completed exam results yet (all still Pursuing)
 
-TAB 3 — PASS vs. FAIL ANALYSIS
-────────────────────────────────
-Compares average scores between candidates who score above the pass threshold
-and those who score below it. Useful for spotting trends.
+TAB 3 — PLACEMENT SUCCESS BY SCORE
+────────────────────────────────────
+Compares average assessment scores between two groups:
+  • Successful (6+ months) — candidates confirmed to have stayed 6+ months
+  • Unsuccessful — candidates who were placed but did not reach 6 months
+
+Columns shown for each group:
+  • # Candidates
+  • Avg Composite
+  • Avg CCAT %ile
+  • Avg CBST %ile
+  • Avg CMRA %ile
+  • Avg Typing %ile
+  • Avg CAST %ile
+
+Use this tab to spot whether higher-scoring candidates tend to achieve
+longer-lasting placements, and to identify which assessments are most
+predictive of placement success.
+
+SORTING
+────────
+All three tabs support column sorting. Click any column header to sort by
+that column. Click again to reverse the sort direction. An arrow glyph
+indicates the active sort column and direction.
 
 EXPORTING TO CSV
 ─────────────────
@@ -373,6 +414,9 @@ Any of the three tabs can be exported to a CSV file:
 1. Select the tab you want to export.
 2. Click "Export CSV."
 3. Choose a save location. The file opens in Excel.
+
+The exported file will always match what is currently displayed, including
+the active sort order.
 """
         ),
 
@@ -488,6 +532,22 @@ Scores only appear after a candidate's assessment data has been imported.
   • Use "Import PDF's" to import from the Criteria PDF reports.
   • Use "Import CSV" to import from a Criteria CSV export.
   • Or select the candidate and click "Assess" to enter scores manually.
+
+PROBLEM: Analytics shows "—" instead of scores
+─────────────────────────────────────────────────
+A dash ("—") means there were no recorded scores to average for that
+group or pathway. This is normal when:
+  • Candidates in that pathway have not had their PDF or CSV imported yet.
+  • Scores were not entered manually via the "Assess" button.
+Import or manually enter at least one of the five overall-percentile scores
+(CCAT, CBST, CMRA, Typing, CAST) for each candidate to see composite values.
+
+PROBLEM: Score Pass Rate in Analytics shows 0% or seems low
+─────────────────────────────────────────────────────────────
+Score Pass Rate uses a Composite threshold of 50 (50th percentile). Only
+candidates whose average of recorded overall-percentile scores is at or
+above 50 count as passing. If most candidates score below the 50th
+percentile, a low pass rate is expected and accurate.
 """
         ),
     };
